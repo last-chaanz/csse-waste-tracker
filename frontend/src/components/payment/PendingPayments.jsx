@@ -10,7 +10,7 @@ const PendingPayments = () => {
     const dummyPendingPayments = [
         {
             _id: '1',
-            pickupDate: '2024-10-20',
+            pickupDate: '2024-10-02',
             location: '123 Main St, City',
             wasteType: 'Food',
             amount: 25.0,
@@ -41,30 +41,50 @@ const PendingPayments = () => {
             ) : (
                 <div className="space-y-4">
                     {dummyPendingPayments.map((payment) => (
-                        <div key={payment._id} className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+                        <div
+                            key={payment._id}
+                            className="rounded-lg border border-gray-300 bg-white p-6 shadow-sm hover:shadow-[0_20px_60px_-15px_rgba(0,100,0,0.2)]"
+                        >
                             <div className="flex items-start justify-between">
                                 <div className="space-y-2">
                                     <div className="flex items-center space-x-2">
-                                        <span className="text-sm font-medium text-gray-500">Bin ID:</span>
+                                        <span className="text-sm font-medium text-gray-500">🗑️ Bin ID:</span>
                                         <span className="text-sm text-gray-900">{payment.binId}</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <span className="text-sm font-medium text-gray-500">Pickup Date:</span>
+                                        <span className="text-sm font-medium text-gray-500">📅 Pickup Date:</span>
                                         <span className="text-sm text-gray-900">
                                             {new Date(payment.pickupDate).toLocaleDateString()}
                                         </span>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <span className="text-sm font-medium text-gray-500">Location:</span>
+                                        <span className="text-sm font-medium text-gray-500">📍 Location:</span>
                                         <span className="text-sm text-gray-900">{payment.location}</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <span className="text-sm font-medium text-gray-500">Waste Type:</span>
+                                        <span className="text-sm font-medium text-gray-500">🏷️ Waste Type:</span>
                                         <span className="text-sm text-gray-900">{payment.wasteType}</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <span className="text-sm font-medium text-gray-500">Amount:</span>
+                                        <span className="text-sm font-medium text-gray-500">💲Amount:</span>
                                         <span className="text-sm font-semibold text-gray-900">${payment.amount.toFixed(2)}</span>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        {(() => {
+                                            const daysDifference =
+                                                (new Date() - new Date(payment.pickupDate)) / (1000 * 60 * 60 * 24);
+                                            const isOverdue = daysDifference > 14;
+
+                                            return (
+                                                <span
+                                                    className={`text-sm font-medium ${
+                                                        isOverdue ? 'text-red-600' : 'text-orange-500'
+                                                    }`}
+                                                >
+                                                    {isOverdue ? '🔴 Payment Overdue' : '🟡 Payment Due'}
+                                                </span>
+                                            );
+                                        })()}
                                     </div>
                                 </div>
                                 <button
