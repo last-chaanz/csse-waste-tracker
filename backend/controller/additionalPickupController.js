@@ -44,6 +44,20 @@ exports.getAdditionalPickups = async (req, res) => {
   }
 };
 
+exports.getAdditionalPickupsByUserId = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    // Ensure the requesting user can only access their own pickups
+    if (userId !== req.user.id) {
+      return res.status(403).json({ message: "Unauthorized access" });
+    }
+    const pickups = await AdditionalPickup.find({ userId });
+    res.status(200).json(pickups);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 exports.updatePaymentStatus = async (req, res) => {
   try {
     const { id } = req.params;
