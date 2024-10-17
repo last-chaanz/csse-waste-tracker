@@ -3,6 +3,7 @@ const { authMiddleware } = require("../middleware/authMiddleware");
 const {
   createAdditionalPickup,
   getAdditionalPickups,
+  getAdditionalPickupsByUserId,
   updatePaymentStatus,
   updatePickupStatus,
   addComplaint,
@@ -12,6 +13,11 @@ const router = express.Router();
 
 router.post("/additional-pickup", authMiddleware, createAdditionalPickup);
 router.get("/additional-pickups", authMiddleware, getAdditionalPickups);
+router.get(
+  "/additional-pickups/:userId",
+  authMiddleware,
+  getAdditionalPickupsByUserId
+);
 router.put("/additional-pickup/:id/pay", authMiddleware, updatePaymentStatus);
 router.put(
   "/additional-pickup/:id/complete",
