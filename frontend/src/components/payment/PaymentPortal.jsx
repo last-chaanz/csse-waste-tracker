@@ -15,7 +15,7 @@ const PaymentPortal = ({ payment, onClose }) => {
 
     return (
         <div className="fixed inset-0 h-full w-full overflow-y-auto bg-gray-600 bg-opacity-50">
-            <div className="relative top-20 mx-auto w-96 rounded-md border bg-white p-5 shadow-lg">
+            <div className="relative top-1/4 mx-auto w-96 rounded-md border bg-white p-5 shadow-lg">
                 <div className="mt-3">
                     <h3 className="mb-4 text-lg font-medium text-gray-900">Payment Portal</h3>
                     <div className="mb-4 grid grid-cols-2 gap-4">
@@ -23,7 +23,7 @@ const PaymentPortal = ({ payment, onClose }) => {
                             onClick={() => setPaymentMethod('card')}
                             className={`rounded p-2 text-sm font-medium ${
                                 paymentMethod === 'card'
-                                    ? 'bg-blue-600 text-white'
+                                    ? 'bg-green-600 text-white'
                                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                             }`}
                         >
@@ -33,7 +33,7 @@ const PaymentPortal = ({ payment, onClose }) => {
                             onClick={() => setPaymentMethod('paypal')}
                             className={`rounded p-2 text-sm font-medium ${
                                 paymentMethod === 'paypal'
-                                    ? 'bg-blue-600 text-white'
+                                    ? 'bg-green-600 text-white'
                                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                             }`}
                         >
@@ -71,7 +71,7 @@ const PaymentPortal = ({ payment, onClose }) => {
                             </div>
                             <button
                                 type="submit"
-                                className="w-full rounded-md bg-blue-600 p-2 text-white transition duration-150 ease-in-out hover:bg-blue-700"
+                                className="w-full rounded-md bg-green-600 p-2 text-white transition duration-150 ease-in-out hover:bg-green-700"
                             >
                                 Pay ${payment.amount.toFixed(2)}
                             </button>
@@ -80,7 +80,7 @@ const PaymentPortal = ({ payment, onClose }) => {
                         <div className="p-4 text-center">
                             <button
                                 onClick={handleSubmit}
-                                className="w-full rounded-md bg-blue-600 p-2 text-white transition duration-150 ease-in-out hover:bg-blue-700"
+                                className="w-full rounded-md bg-green-600 p-2 text-white transition duration-150 ease-in-out hover:bg-green-700"
                             >
                                 Pay with PayPal
                             </button>

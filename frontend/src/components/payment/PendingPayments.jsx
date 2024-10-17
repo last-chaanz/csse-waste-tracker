@@ -72,7 +72,7 @@ const PendingPayments = () => {
                                         setSelectedPayment(payment);
                                         setShowPortal(true);
                                     }}
-                                    className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition duration-150 ease-in-out hover:bg-blue-700"
+                                    className="rounded-md bg-green-800 px-4 py-2 text-sm font-medium text-white transition duration-150 ease-in-out hover:bg-green-950"
                                 >
                                     Pay Now
                                 </button>
