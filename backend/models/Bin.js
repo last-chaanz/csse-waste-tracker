@@ -38,6 +38,17 @@ const wasteBinSchema = new mongoose.Schema({
         enum: ["Empty", "Partial", "Full"], 
         default: "Empty",
     },
+    collectionDay:{
+        type: String, 
+        enum: ["To Be Scheduled","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], 
+        default: "To Be Scheduled",
+    },
+    collectionStatus:
+    {
+        type: String, 
+        enum: ["Scheduled","Collected"], 
+        default: "Scheduled",
+    },
     last_updated: 
     { 
         type: Date, 

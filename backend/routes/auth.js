@@ -242,6 +242,25 @@ router.get('/collectors', async (req, res) => {
   }
 });
 
+router.get('/userAddress/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Fetch user from the database
+    const user = await User.findById(userId).select("address");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Return the user's address
+    res.status(200).json({ address: user.address });
+  } catch (error) {
+    console.error("Error in fetching user:", error); // Log the error
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
 module.exports = router;
 
 

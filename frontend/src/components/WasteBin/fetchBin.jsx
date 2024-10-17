@@ -114,7 +114,7 @@ const WasteBinList = () => {
                             No waste bins registered.
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-10">
                             {wasteBins.map((bin) => (
                                 <div
                                     key={bin._id}
@@ -143,6 +143,9 @@ const WasteBinList = () => {
                                     {/* Status */}
                                     <p className="text-sm text-gray-700">
                                         <strong>Status:</strong> {bin.status}
+                                    </p>
+                                    <p className="text-sm text-gray-700">
+                                        <strong>CollectionDay:</strong> {bin.collectionDay}
                                     </p>
                                     <div className="mt-4 flex space-x-2">
                                         <button
