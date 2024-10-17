@@ -13,6 +13,8 @@ import FetchBin from './components/WasteBin/fetchBin';
 import CollectorBin from './components/WasteBin/collectorBin';
 import NotFound from './components/User/NotFound';
 
+import PaymentTabs from './components/payment/PaymentTabs';
+
 function App() {
     const [user, setUser] = useState(null);
 
@@ -48,6 +50,8 @@ function App() {
                     <Route path="/registerBin" element={<RegisterBin />} />
                     <Route path="/fetchBin" element={<FetchBin />} />
                     <Route path="/collectorBin" element={<CollectorBin />} />
+
+                    <Route path="/payments" element={<PaymentTabs />} />
 
                     <Route path="*" element={<NotFound />} />
                 </Routes>
