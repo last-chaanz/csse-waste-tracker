@@ -32,19 +32,27 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password, address, role , userType } = req.body;
-console.log('✌️name --->', name);
+    const { name, email, password, address, role, userType } = req.body;
+    // console.log('✌️name --->', name);
 
     try {
       let user = await User.findOne({ email });
       if (user) return res.status(400).json({ msg: "User already exists" });
 
-      user = new User({ name, email, password, address, role, userType,isVerified:true });
+      user = new User({
+        name,
+        email,
+        password,
+        address,
+        role,
+        userType,
+        isVerified: true,
+      });
       await user.save();
 
       res.status(201).json({ msg: "Registered successfully" });
     } catch (err) {
-console.log('✌️err --->', err);
+      console.log("✌️err --->", err);
       res.status(500).json({ msg: "Server error", error: err.message });
     }
   }
@@ -71,14 +79,17 @@ router.post(
       if (!user || !(await user.comparePassword(password))) {
         return res.status(400).json({ msg: "Invalid credentials" });
       }
-      const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: "1h" });
+      const token = jwt.sign(
+        { userId: user._id, role: user.role },
+        JWT_SECRET,
+        { expiresIn: "1h" }
+      );
       res.status(200).json({ token, role: user.role, userType: user.userType });
     } catch (err) {
       res.status(500).json({ msg: "Server error" });
     }
   }
 );
-
 
 // Email Verification Route
 router.get("/verify/:token", async (req, res) => {
@@ -87,7 +98,8 @@ router.get("/verify/:token", async (req, res) => {
     const user = await User.findById(decoded.userId);
 
     if (!user) return res.status(400).json({ msg: "User not found" });
-    if (user.isVerified) return res.status(400).json({ msg: "User already verified" });
+    if (user.isVerified)
+      return res.status(400).json({ msg: "User already verified" });
 
     user.isVerified = true;
     await user.save();
@@ -169,7 +181,7 @@ router.put("/user", authMiddleware, async (req, res) => {
 
     user.name = name || user.name;
     user.address = address || user.address;
-console.log('✌️user --->', user);
+    console.log("✌️user --->", user);
 
     await user.save();
     res.status(200).json({ msg: "Profile updated successfully", user });
@@ -190,14 +202,14 @@ router.delete("/user", authMiddleware, async (req, res) => {
 });
 
 // Update a garbage collector
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const { name, address } = req.body;
     const { id } = req.params;
 
     let collector = await User.findById(id);
     if (!collector) {
-      return res.status(404).json({ msg: 'Collector not found' });
+      return res.status(404).json({ msg: "Collector not found" });
     }
 
     // Update the fields if they are provided in the request
@@ -205,40 +217,42 @@ router.put('/:id', async (req, res) => {
     collector.address = address || collector.address;
 
     await collector.save();
-    res.status(200).json({ msg: 'Collector updated successfully' });
+    res.status(200).json({ msg: "Collector updated successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: 'Server Error' });
+    res.status(500).json({ msg: "Server Error" });
   }
 });
 
 // Delete a garbage collector
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const collector = await User.findByIdAndDelete(id);
 
     if (!collector) {
-      return res.status(404).json({ msg: 'Collector not found' });
+      return res.status(404).json({ msg: "Collector not found" });
     }
-    res.status(200).json({ msg: 'Collector deleted successfully' });
+    res.status(200).json({ msg: "Collector deleted successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: 'Server Error' });
+    res.status(500).json({ msg: "Server Error" });
   }
 });
 
 // Get all garbage collectors with role 'collector'
-router.get('/collectors', async (req, res) => {
+router.get("/collectors", async (req, res) => {
   try {
     // Find users where role is 'collector', exclude passwords from results
-    const collectors = await User.find({ role: 'collector' }).select('-password');
-    
+    const collectors = await User.find({ role: "collector" }).select(
+      "-password"
+    );
+
     // Respond with the list of collectors
     res.status(200).json(collectors);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: 'Server Error' });
+    res.status(500).json({ msg: "Server Error" });
   }
 });
 
@@ -262,5 +276,3 @@ router.get('/userAddress/:userId', async (req, res) => {
 });
 
 module.exports = router;
-
-
