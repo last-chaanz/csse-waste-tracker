@@ -161,13 +161,13 @@ const GarbageCollectorDashboard = ({ onLogout }) => {
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                     {/* Waste Bin Registration Card */}
                     <div className="transform rounded-lg bg-white p-8 shadow-lg transition-transform hover:scale-105 hover:shadow-2xl">
-                        <h2 className="mb-4 text-lg font-semibold">Waste Bin Registration</h2>
-                        <p className="text-base text-gray-700">Register your waste bin to schedule collections efficiently.</p>
+                        <h2 className="mb-4 text-lg font-semibold">Manage Waste Bin</h2>
+                        <p className="text-base text-gray-700">Mange waste bin to schedule that are assigned to me.</p>
                         <button
-                            onClick={() => navigate('/register-bin')}
+                            onClick={() => navigate('/collectorBin')}
                             className="mt-4 rounded bg-blue-500 px-6 py-3 text-lg text-white transition duration-300 hover:bg-blue-600"
                         >
-                            Register Bin
+                            Bins assigned to me
                         </button>
                     </div>
 
@@ -228,7 +228,7 @@ const GarbageCollectorDashboard = ({ onLogout }) => {
             </main>
 
             {/* Footer Section */}
-            <footer className="bg-gray-800 p-4 text-center text-white">
+            <footer className="bg-teal-500 p-4 text-center text-white">
                 <p>&copy; 2024 Garbage Management. All rights reserved.</p>
             </footer>
 
