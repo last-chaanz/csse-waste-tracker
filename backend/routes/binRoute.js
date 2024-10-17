@@ -6,6 +6,9 @@ const {
   getAllWasteBins,
   updateWasteBin,
   deleteWasteBin,
+  getWasteBinByLocation,
+  updateCollectionDay,
+  resetWasteLevel,
 } = require("../controller/binController");
 
 // Create a router instance
@@ -22,6 +25,12 @@ router.put("/updateBin/:id", updateWasteBin);
 router.delete("/wastebins/:binId", deleteWasteBin);
 
 router.get("/wastebins", getAllWasteBins);
+
+router.get("/wastebin/:location", getWasteBinByLocation);
+
+router.put("/wastebin/updateDay/:binId", updateCollectionDay);
+
+router.put("/wastebin/markCollected/:binId", resetWasteLevel);
 
 // Export the router
 module.exports = router;

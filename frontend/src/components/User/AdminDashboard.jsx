@@ -8,14 +8,14 @@ const AdminDashboard = () => {
     const [showAddCollectorModal, setShowAddCollectorModal] = useState(false);
     const [showUpdateCollectorModal, setShowUpdateCollectorModal] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
-    const [newCollector, setNewCollector] = useState({ name: '', email: '', password: '', address: '' });
+    const [newCollector, setNewCollector] = useState({ name: '', email: '', password: '', address: '' ,role: 'collector', userType: 'collector'});
     const [collectors, setCollectors] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [currentCollectorId, setCurrentCollectorId] = useState(null);
-    const [user, setUser] = useState({
-        email: 'admin@example.com',
-        name: 'Admin',
-        profilePicture: 'https://via.placeholder.com/150',
+    const [id, setCurrentCollectorId] = useState(null);
+    const [user, setUser] = useState({ 
+        email: 'admin@example.com', 
+        name: 'Admin', 
+        profilePicture: 'https://via.placeholder.com/150'
     });
     const [updatedUser, setUpdatedUser] = useState({ name: '', address: '' });
     const navigate = useNavigate();
@@ -159,14 +159,16 @@ const AdminDashboard = () => {
             name: collector.name,
             email: collector.email,
             address: collector.address,
-            role: 'collector',
-            userType: 'collector',
+            role: collector.role || 'collector', 
         });
+        console.log(newCollector.role); // Check role value here
         setShowUpdateCollectorModal(true);
     };
 
     const handleAddCollector = async () => {
         try {
+            console.log(newCollector);
+            
             const response = await axios.post('http://localhost:4000/api/auth/register', newCollector);
             notification.success({ message: 'Success', description: 'Collector added successfully.' });
             setShowAddCollectorModal(false);
@@ -180,9 +182,18 @@ const AdminDashboard = () => {
     };
 
     const handleUpdateCollector = async () => {
+        if (!id) {
+            notification.error({
+                message: 'Error',
+                description: 'Collector ID is missing',
+            });
+            return;
+        }
+    
         try {
-            const response = await axios.put(`http://localhost:4000/api/auth/${currentCollectorId}`, newCollector);
+            const response = await axios.put(`http://localhost:4000/api/auth/${id}`, newCollector);
             notification.success({ message: 'Success', description: 'Collector updated successfully.' });
+            
             setShowUpdateCollectorModal(false);
             fetchCollectors(); // Refresh collectors list
         } catch (error) {
