@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const additionalPickupSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   binId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "WasteBin",
@@ -21,7 +26,6 @@ const additionalPickupSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: false,
   },
   paymentStatus: {
     type: String,
@@ -35,7 +39,6 @@ const additionalPickupSchema = new mongoose.Schema({
   },
   complaint: {
     type: String,
-    required: false,
   },
   createdAt: {
     type: Date,
