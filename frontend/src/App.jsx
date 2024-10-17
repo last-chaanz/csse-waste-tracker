@@ -14,6 +14,7 @@ import CollectorBin from './components/WasteBin/collectorBin';
 import NotFound from './components/User/NotFound';
 
 import PaymentTabs from './components/payment/PaymentTabs';
+import AdditionalPickupList from './pages/AdditionalPickupList';
 
 function App() {
     const [user, setUser] = useState(null);
@@ -52,6 +53,7 @@ function App() {
                     <Route path="/collectorBin" element={<CollectorBin />} />
 
                     <Route path="/payments" element={<PaymentTabs />} />
+                    <Route path="/additional-pickups" element={<AdditionalPickupList />} />
 
                     <Route path="*" element={<NotFound />} />
                 </Routes>
