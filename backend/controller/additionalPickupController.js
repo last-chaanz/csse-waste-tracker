@@ -1,8 +1,15 @@
 const AdditionalPickup = require("../models/AdditionalPickup");
 const WasteBin = require("../models/Bin");
+const additionalPickupValidation = require("../validations/additionalPickupValidation");
 
 exports.createAdditionalPickup = async (req, res) => {
   try {
+    const { error } =
+      additionalPickupValidation.createAdditionalPickup.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
     const { binId, wasteType, pickupDate, description } = req.body;
     const userId = req.user?.userId;
 
@@ -15,12 +22,6 @@ exports.createAdditionalPickup = async (req, res) => {
     const bin = await WasteBin.findById(binId);
     if (!bin) {
       return res.status(404).json({ message: "Bin not found" });
-    }
-
-    if (new Date(pickupDate) < new Date()) {
-      return res
-        .status(400)
-        .json({ message: "Pickup date cannot be in the past" });
     }
 
     const newPickup = new AdditionalPickup({
@@ -37,11 +38,6 @@ exports.createAdditionalPickup = async (req, res) => {
     res.status(201).json(newPickup);
   } catch (error) {
     console.error("Error in createAdditionalPickup:", error);
-    if (error.name === "ValidationError") {
-      return res
-        .status(400)
-        .json({ message: "Validation error", details: error.errors });
-    }
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -86,6 +82,13 @@ exports.getAdditionalPickupsByUserId = async (req, res) => {
 
 exports.updatePaymentStatus = async (req, res) => {
   try {
+    const { error } = additionalPickupValidation.updatePaymentStatus.validate(
+      req.params
+    );
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
     const { id } = req.params;
     const pickup = await AdditionalPickup.findById(id);
 
@@ -109,6 +112,13 @@ exports.updatePaymentStatus = async (req, res) => {
 
 exports.updatePickupStatus = async (req, res) => {
   try {
+    const { error } = additionalPickupValidation.updatePickupStatus.validate(
+      req.params
+    );
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
     const { id } = req.params;
     const userId = req.user?.userId;
 
@@ -142,6 +152,16 @@ exports.addComplaint = async (req, res) => {
   try {
     const { id } = req.params;
     const { complaint } = req.body;
+
+    const { error } = additionalPickupValidation.addComplaint.validate({
+      id,
+      complaint,
+    });
+
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
     const pickup = await AdditionalPickup.findById(id);
 
     if (!pickup) {
