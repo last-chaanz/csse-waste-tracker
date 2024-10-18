@@ -220,13 +220,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import RegisterImageFinal from "./images/RegisterImageFinal.jpg"; // Ensure the path is correct
-import LoginImage from "./images/logoImage.jpg"; // Adjust the path if needed
+import RegisterImageFinal from '../../images/RegisterImageFinal.jpg'; // Ensure the path is correct
+import LoginImage from '../../images/logoImage.jpg'; // Adjust the path if needed
 
 // InputField Component
 const InputField = ({ label, type, name, value, onChange, placeholder, error }) => (
     <div className="mb-4">
-        <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor={name} className="mb-1 block text-sm font-medium text-gray-700">
             {label}
         </label>
         <input
@@ -236,13 +236,13 @@ const InputField = ({ label, type, name, value, onChange, placeholder, error }) 
             onChange={onChange}
             aria-invalid={!!error}
             aria-describedby={error ? `${name}-error` : null}
-            className={`border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ${
+            className={`w-full rounded-lg border p-3 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 error ? 'border-red-500' : 'border-gray-300'
             }`}
             placeholder={placeholder}
         />
         {error && (
-            <p id={`${name}-error`} className="text-red-500 text-sm mt-1">
+            <p id={`${name}-error`} className="mt-1 text-sm text-red-500">
                 {error}
             </p>
         )}
@@ -250,18 +250,10 @@ const InputField = ({ label, type, name, value, onChange, placeholder, error }) 
 );
 
 // Success Message Component
-const SuccessMessage = ({ message }) => (
-    <div className="bg-green-100 text-green-700 p-3 rounded mb-4">
-        {message}
-    </div>
-);
+const SuccessMessage = ({ message }) => <div className="mb-4 rounded bg-green-100 p-3 text-green-700">{message}</div>;
 
 // Error Message Component
-const ErrorMessage = ({ message }) => (
-    <div className="bg-red-100 text-red-700 p-3 rounded mb-4">
-        {message}
-    </div>
-);
+const ErrorMessage = ({ message }) => <div className="mb-4 rounded bg-red-100 p-3 text-red-700">{message}</div>;
 
 // RegistrationForm Component
 const RegistrationForm = () => {
@@ -271,7 +263,7 @@ const RegistrationForm = () => {
         password: '',
         address: '',
         userType: 'residence', // Default userType
-        role: 'user' // Assuming 'user' role by default
+        role: 'user', // Assuming 'user' role by default
     });
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
@@ -287,7 +279,7 @@ const RegistrationForm = () => {
             password: '',
             address: '',
             userType: 'residence',
-            role: 'user'
+            role: 'user',
         });
     }, []); // Empty dependency array means this runs once on mount
 
@@ -338,7 +330,7 @@ const RegistrationForm = () => {
                 password: '',
                 address: '',
                 userType: 'residence',
-                role: 'user'
+                role: 'user',
             });
             navigate('/'); // Navigate to the home or login page
         } catch (error) {
@@ -364,34 +356,46 @@ const RegistrationForm = () => {
         <div className="flex min-h-screen">
             {/* Left Side: Image and Content */}
             <div
-        className="relative flex-1"
-        style={{
-            backgroundImage: `url(${RegisterImageFinal})`,
-            backgroundSize: 'contain', // Change to 'contain' to keep the entire image visible
-            backgroundPosition: 'top center', // Aligns the image to the top center
-            height: '100vh',
-            width: '100%',
-            paddingTop: '40%', // Adds padding to push the content down
-            backgroundRepeat: 'no-repeat', // Prevents the background from repeating
-            }}
->
+                className="relative flex-1"
+                style={{
+                    backgroundImage: `url(${RegisterImageFinal})`,
+                    backgroundSize: 'contain', // Change to 'contain' to keep the entire image visible
+                    backgroundPosition: 'top center', // Aligns the image to the top center
+                    height: '100vh',
+                    width: '100%',
+                    paddingTop: '40%', // Adds padding to push the content down
+                    backgroundRepeat: 'no-repeat', // Prevents the background from repeating
+                }}
+            >
                 <div className="absolute inset-0 flex flex-col justify-end p-4">
-                    <div className="max-w-full mx-auto bg-white rounded-lg shadow-md mb-6 p-4 w-full">
-                        <h2 className="text-3xl font-semibold text-center text-blue-700">Become a champion for a cleaner, greener community!</h2>
-                        <p className="mt-4 text-center">Together, we will revolutionize waste management and create a vibrant environment for everyone to enjoy!</p>
+                    <div className="mx-auto mb-6 w-full max-w-full rounded-lg bg-white p-4 shadow-md">
+                        <h2 className="text-center text-3xl font-semibold text-blue-700">
+                            Become a champion for a cleaner, greener community!
+                        </h2>
+                        <p className="mt-4 text-center">
+                            Together, we will revolutionize waste management and create a vibrant environment for everyone to
+                            enjoy!
+                        </p>
                     </div>
                 </div>
             </div>
-            
 
             {/* Right Side: Registration Form */}
-            <div className="flex items-center justify-center flex-1 bg-white p-8 border-l"> {/* Changed items-start to items-center */}
-                <div className="max-w-sm w-full"> {/* Reduced max width for form */}
-                    <div className="bg-white p-6 rounded-lg shadow-md">
-                        <div className="flex justify-center mb-2"> {/* Adjusted margin */}
+            <div className="flex flex-1 items-center justify-center border-l bg-white p-8">
+                {' '}
+                {/* Changed items-start to items-center */}
+                <div className="w-full max-w-sm">
+                    {' '}
+                    {/* Reduced max width for form */}
+                    <div className="rounded-lg bg-white p-6 shadow-md">
+                        <div className="mb-2 flex justify-center">
+                            {' '}
+                            {/* Adjusted margin */}
                             <img src={LoginImage} alt="Logo" className="h-32" /> {/* Reduced logo size */}
                         </div>
-                        <h2 className="text-2xl font-semibold text-center mb-4 text-blue-700">Register with Garbage Collectors</h2>
+                        <h2 className="mb-4 text-center text-2xl font-semibold text-blue-700">
+                            Register with Garbage Collectors
+                        </h2>
 
                         {successMessage && <SuccessMessage message={successMessage} />}
                         {errors.submit && <ErrorMessage message={errors.submit} />}
@@ -428,7 +432,7 @@ const RegistrationForm = () => {
                             placeholder="Enter your password"
                             error={errors.password}
                         />
-                        <button type="button" onClick={togglePasswordVisibility} className="text-blue-500 mb-2">
+                        <button type="button" onClick={togglePasswordVisibility} className="mb-2 text-blue-500">
                             {showPassword ? 'Hide Password' : 'Show Password'}
                         </button>
 
@@ -445,14 +449,14 @@ const RegistrationForm = () => {
 
                         {/* User Type Selection */}
                         <div className="mb-4">
-                            <label htmlFor="userType" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="userType" className="mb-1 block text-sm font-medium text-gray-700">
                                 User Type
                             </label>
                             <select
                                 name="userType"
                                 value={formData.userType}
                                 onChange={handleChange}
-                                className="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                                className="w-full rounded-lg border p-3 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                                 <option value="residence">Residence</option>
                                 <option value="business">Business</option>
@@ -462,14 +466,16 @@ const RegistrationForm = () => {
                         <button
                             onClick={handleSubmit}
                             disabled={loading}
-                            className={`w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            className={`w-full rounded-lg bg-blue-500 py-2 text-white transition duration-200 hover:bg-blue-600 ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
                         >
                             {loading ? 'Registering...' : 'Register'}
                         </button>
 
                         <p className="mt-4 text-center">
                             Already have an account?{' '}
-                            <a href="/" className="text-blue-500 hover:underline">Login here</a>
+                            <a href="/" className="text-blue-500 hover:underline">
+                                Login here
+                            </a>
                         </p>
                     </div>
                 </div>
@@ -479,7 +485,6 @@ const RegistrationForm = () => {
 };
 
 export default RegistrationForm;
-
 
 // import React, { useState, useEffect } from 'react';
 // import axios from 'axios';

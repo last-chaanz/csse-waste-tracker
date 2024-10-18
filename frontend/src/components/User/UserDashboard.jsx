@@ -502,7 +502,7 @@ const UserDashboard = ({ onLogout }) => {
                         Manage Bin
                     </button>
                     <button
-                        onClick={() => navigate('/collection-schedule')}
+                        onClick={() => navigate('/additional-pickups')}
                         className="block w-full rounded-md bg-gray-100 px-4 py-2 text-left hover:bg-gray-200"
                     >
                         View Schedule
@@ -555,7 +555,7 @@ const UserDashboard = ({ onLogout }) => {
                             <h3 className="text-lg font-semibold">Collection Schedule</h3>
                             <p className="text-gray-600">Check the collection schedule for your area.</p>
                             <button
-                                onClick={() => navigate('/collection-schedule')}
+                                onClick={() => navigate('/additional-pickups')}
                                 className="mt-4 block rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
                             >
                                 View Schedule
