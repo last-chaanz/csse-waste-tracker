@@ -289,7 +289,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Avatar from 'react-avatar';
@@ -309,15 +308,15 @@ const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-                <h2 className="text-2xl font-bold mb-4">Update User Information</h2>
+            <div className="rounded-lg bg-white p-6 shadow-md">
+                <h2 className="mb-4 text-2xl font-bold">Update User Information</h2>
                 <div className="mb-4">
                     <label className="block text-gray-700">Name</label>
                     <input
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="mt-1 block w-full border border-gray-300 p-2 rounded-md"
+                        className="mt-1 block w-full rounded-md border border-gray-300 p-2"
                     />
                 </div>
                 <div className="mb-4">
@@ -326,12 +325,16 @@ const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
                         type="text"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
-                        className="mt-1 block w-full border border-gray-300 p-2 rounded-md"
+                        className="mt-1 block w-full rounded-md border border-gray-300 p-2"
                     />
                 </div>
                 <div className="flex justify-end">
-                    <button onClick={onClose} className="mr-2 rounded bg-gray-300 px-4 py-2">Cancel</button>
-                    <button onClick={handleUpdate} className="rounded bg-blue-500 px-4 py-2 text-white">Update</button>
+                    <button onClick={onClose} className="mr-2 rounded bg-gray-300 px-4 py-2">
+                        Cancel
+                    </button>
+                    <button onClick={handleUpdate} className="rounded bg-blue-500 px-4 py-2 text-white">
+                        Update
+                    </button>
                 </div>
             </div>
         </div>
@@ -454,9 +457,7 @@ const UserDashboard = ({ onLogout }) => {
             }
             const response = await axios.put('http://localhost:4000/api/auth/user', updatedUser, {
                 headers: {
-
                     Authorization: `Bearer ${token}`, // Make sure to include 'Bearer' if needed by your API
-
                 },
             });
 
@@ -491,8 +492,8 @@ const UserDashboard = ({ onLogout }) => {
     return (
         <div className="flex h-screen">
             {/* Sidebar */}
-            <aside className="flex flex-col p-4 space-y-4 bg-white shadow-md rounded-md w-64">
-                <h2 className="text-2xl font-bold text-center">CountryClean.LK</h2>
+            <aside className="flex w-64 flex-col space-y-4 rounded-md bg-white p-4 shadow-md">
+                <h2 className="text-center text-2xl font-bold">CountryClean.LK</h2>
                 <div className="flex flex-col space-y-2">
                     <button
                         onClick={() => navigate('/FetchBin')}
@@ -501,7 +502,7 @@ const UserDashboard = ({ onLogout }) => {
                         Manage Bin
                     </button>
                     <button
-                        onClick={() => navigate('/collection-schedule')}
+                        onClick={() => navigate('/additional-pickups')}
                         className="block w-full rounded-md bg-gray-100 px-4 py-2 text-left hover:bg-gray-200"
                     >
                         View Schedule
@@ -533,14 +534,14 @@ const UserDashboard = ({ onLogout }) => {
                         </button>
                     </div>
                     <div className="flex items-center">
-                        <span className="text-sm text-gray-500 mr-4">{currentDateTime}</span>
+                        <span className="mr-4 text-sm text-gray-500">{currentDateTime}</span>
                     </div>
                 </header>
 
                 {/* Main Section */}
                 <main className="flex-1 p-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div className="bg-white p-6 rounded-lg shadow-md">
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="rounded-lg bg-white p-6 shadow-md">
                             <h3 className="text-lg font-semibold">Manage Your Bin</h3>
                             <p className="text-gray-600">Manage your waste bin and schedule pickups.</p>
                             <button
@@ -550,17 +551,17 @@ const UserDashboard = ({ onLogout }) => {
                                 Manage Your Bin
                             </button>
                         </div>
-                        <div className="bg-white p-6 rounded-lg shadow-md">
+                        <div className="rounded-lg bg-white p-6 shadow-md">
                             <h3 className="text-lg font-semibold">Collection Schedule</h3>
                             <p className="text-gray-600">Check the collection schedule for your area.</p>
                             <button
-                                onClick={() => navigate('/collection-schedule')}
+                                onClick={() => navigate('/additional-pickups')}
                                 className="mt-4 block rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
                             >
                                 View Schedule
                             </button>
                         </div>
-                        <div className="bg-white p-6 rounded-lg shadow-md">
+                        <div className="rounded-lg bg-white p-6 shadow-md">
                             <h3 className="text-lg font-semibold">Payments</h3>
                             <p className="text-gray-600">Manage your payments for waste collection services.</p>
                             <button
@@ -575,27 +576,27 @@ const UserDashboard = ({ onLogout }) => {
                     {/* Display user tips */}
                     <div className="mt-8">
                         <h2 className="text-xl font-semibold">Tip of the Moment:</h2>
-                        <div className="mt-2 p-4 border rounded-md bg-gray-50">
+                        <div className="mt-2 rounded-md border bg-gray-50 p-4">
                             <h3 className="text-lg font-bold">{tips[currentTipIndex].title}</h3>
                             <p className="text-gray-600">{tips[currentTipIndex].content}</p>
                         </div>
                     </div>
 
                     {/* User Statistics Section */}
-                    <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div className="bg-white p-6 rounded-lg shadow-md">
+                    <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="rounded-lg bg-white p-6 shadow-md">
                             <h3 className="text-lg font-semibold">Total Collections</h3>
                             <p className="text-gray-600">{statistics.totalCollections}</p>
                         </div>
-                        <div className="bg-white p-6 rounded-lg shadow-md">
+                        <div className="rounded-lg bg-white p-6 shadow-md">
                             <h3 className="text-lg font-semibold">Total Bins Managed</h3>
                             <p className="text-gray-600">{statistics.totalBins}</p>
                         </div>
-                        <div className="bg-white p-6 rounded-lg shadow-md">
+                        <div className="rounded-lg bg-white p-6 shadow-md">
                             <h3 className="text-lg font-semibold">Garbage Collected (kg)</h3>
                             <p className="text-gray-600">{statistics.garbageCollected}</p>
                         </div>
-                        <div className="bg-white p-6 rounded-lg shadow-md">
+                        <div className="rounded-lg bg-white p-6 shadow-md">
                             <h3 className="text-lg font-semibold">Collections This Month</h3>
                             <p className="text-gray-600">{statistics.collectionsThisMonth}</p>
                         </div>
@@ -604,7 +605,9 @@ const UserDashboard = ({ onLogout }) => {
 
                 {/* Footer */}
                 <footer className="bg-white p-4 text-center">
-                    <p className="text-sm text-gray-600">&copy; {new Date().getFullYear()} CountryClean.LK. All rights reserved.</p>
+                    <p className="text-sm text-gray-600">
+                        &copy; {new Date().getFullYear()} CountryClean.LK. All rights reserved.
+                    </p>
                 </footer>
             </div>
 
@@ -620,4 +623,3 @@ const UserDashboard = ({ onLogout }) => {
 };
 
 export default UserDashboard;
-
