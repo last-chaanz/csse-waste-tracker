@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format, isBefore, startOfDay } from 'date-fns';
@@ -14,6 +15,7 @@ import { jwtDecode } from 'jwt-decode';
 
 const AdditionalPickupList = () => {
     const [pickups, setPickups] = useState([]);
+    const [showCompleted, setShowCompleted] = useState(false);
     const [bins, setBins] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isAddingPickup, setIsAddingPickup] = useState(false);
@@ -70,6 +72,10 @@ const AdditionalPickupList = () => {
             setIsLoading(false);
         }
     };
+
+    const filteredPickups = pickups.filter((pickup) =>
+        showCompleted ? pickup.pickupStatus === 'Completed' : pickup.pickupStatus !== 'Completed',
+    );
 
     const handleInputChange = (name, value) => {
         setNewPickup({ ...newPickup, [name]: value });
@@ -166,76 +172,81 @@ const AdditionalPickupList = () => {
     return (
         <div className="container mx-auto mt-10 rounded-lg bg-white p-6 shadow-lg">
             <h1 className="mb-6 text-3xl font-bold text-teal-600">Additional Pickups</h1>
-            <Dialog open={isAddingPickup} onOpenChange={setIsAddingPickup}>
-                <DialogTrigger asChild>
-                    <Button className="mb-6 bg-teal-500 hover:bg-teal-700">
-                        <PlusCircle className="mr-2 h-4 w-4" /> Add New Pickup
-                    </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                        <DialogTitle>Add New Pickup</DialogTitle>
-                    </DialogHeader>
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="binId">Select Bin</Label>
-                            <Select onValueChange={(value) => handleInputChange('binId', value)} required>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select Bin" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {bins.map((bin) => (
-                                        <SelectItem key={bin._id} value={bin._id}>
-                                            {bin.binType} - {bin.location}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="wasteType">Waste Type</Label>
-                            <Select onValueChange={(value) => handleInputChange('wasteType', value)} required>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select Waste Type" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="Food">Food</SelectItem>
-                                    <SelectItem value="Non Recyclable Waste">Non Recyclable Waste</SelectItem>
-                                    <SelectItem value="Recyclable Waste">Recyclable Waste</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="space-y-2">
-                            <Label>Pickup Date</Label>
-                            <Popover>
-                                <PopoverTrigger asChild>
-                                    <Button variant="outline">{format(newPickup.pickupDate, 'PPP')}</Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-auto p-0">
-                                    <Calendar
-                                        mode="single"
-                                        selected={newPickup.pickupDate}
-                                        onSelect={(date) => handleInputChange('pickupDate', date)}
-                                        disabled={(date) => isBefore(date, startOfDay(new Date()))}
-                                        initialFocus
-                                    />
-                                </PopoverContent>
-                            </Popover>
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="description">Description</Label>
-                            <Input
-                                id="description"
-                                value={newPickup.description}
-                                onChange={(e) => handleInputChange('description', e.target.value)}
-                            />
-                        </div>
-                        <Button type="submit" className="bg-teal-500 hover:bg-teal-700">
-                            Submit
+            <div className="mb-4 flex items-center justify-between">
+                <Dialog open={isAddingPickup} onOpenChange={setIsAddingPickup}>
+                    <DialogTrigger asChild>
+                        <Button className="bg-teal-500 hover:bg-teal-700">
+                            <PlusCircle className="mr-2 h-4 w-4" /> Add New Pickup
                         </Button>
-                    </form>
-                </DialogContent>
-            </Dialog>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                            <DialogTitle>Add New Pickup</DialogTitle>
+                        </DialogHeader>
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="binId">Select Bin</Label>
+                                <Select onValueChange={(value) => handleInputChange('binId', value)} required>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Bin" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {bins.map((bin) => (
+                                            <SelectItem key={bin._id} value={bin._id}>
+                                                {bin.binType} - {bin.location}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="wasteType">Waste Type</Label>
+                                <Select onValueChange={(value) => handleInputChange('wasteType', value)} required>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Waste Type" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="Food">Food</SelectItem>
+                                        <SelectItem value="Non Recyclable Waste">Non Recyclable Waste</SelectItem>
+                                        <SelectItem value="Recyclable Waste">Recyclable Waste</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Pickup Date</Label>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button variant="outline">{format(newPickup.pickupDate, 'PPP')}</Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0">
+                                        <Calendar
+                                            mode="single"
+                                            selected={newPickup.pickupDate}
+                                            onSelect={(date) => handleInputChange('pickupDate', date)}
+                                            disabled={(date) => isBefore(date, startOfDay(new Date()))}
+                                            initialFocus
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="description">Description</Label>
+                                <Input
+                                    id="description"
+                                    value={newPickup.description}
+                                    onChange={(e) => handleInputChange('description', e.target.value)}
+                                />
+                            </div>
+                            <Button type="submit" className="bg-teal-500 hover:bg-teal-700">
+                                Submit
+                            </Button>
+                        </form>
+                    </DialogContent>
+                </Dialog>
+                <Button onClick={() => setShowCompleted(!showCompleted)} className="bg-blue-500 hover:bg-blue-700">
+                    {showCompleted ? 'Show Active Pickups' : 'Show Completed Pickups'}
+                </Button>
+            </div>
             {isLoading ? (
                 <div className="flex h-64 items-center justify-center">
                     <Loader2 className="h-8 w-8 animate-spin text-teal-500" />
@@ -255,10 +266,12 @@ const AdditionalPickupList = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {pickups.map((pickup) => (
+                            {filteredPickups.map((pickup) => (
                                 <tr
                                     key={pickup._id}
-                                    className={`transition duration-200 hover:bg-teal-100 ${pickup.collectorAccepted ? 'bg-green-100' : ''}`}
+                                    className={`relative transition duration-200 hover:bg-teal-100 ${
+                                        pickup.collectorAccepted ? 'bg-green-100' : ''
+                                    }`}
                                 >
                                     <td className="border border-gray-300 p-4 text-sm md:text-base">
                                         {bins.find((bin) => bin._id === pickup.binId)?.binType || 'N/A'}
@@ -271,22 +284,26 @@ const AdditionalPickupList = () => {
                                     <td className="border border-gray-300 p-4 text-sm md:text-base">{pickup.paymentStatus}</td>
                                     <td className="border border-gray-300 p-4 text-sm md:text-base">{pickup.description}</td>
                                     <td className="border border-gray-300 p-4 text-sm md:text-base">
-                                        <Button
-                                            onClick={() => {
-                                                setSelectedPickup(pickup);
-                                                setIsAddingComplaint(true);
-                                            }}
-                                            className="mr-2 bg-yellow-500 hover:bg-yellow-700"
-                                        >
-                                            <AlertCircle className="mr-2 h-4 w-4" /> Complain
-                                        </Button>
-                                        {pickup.paymentStatus !== 'Paid' && (
-                                            <Button
-                                                onClick={() => handlePayment(pickup._id)}
-                                                className="bg-green-500 hover:bg-green-700"
-                                            >
-                                                <CreditCard className="mr-2 h-4 w-4" /> Pay
-                                            </Button>
+                                        {!showCompleted && (
+                                            <>
+                                                <Button
+                                                    onClick={() => {
+                                                        setSelectedPickup(pickup);
+                                                        setIsAddingComplaint(true);
+                                                    }}
+                                                    className="mr-2 bg-yellow-500 hover:bg-yellow-700"
+                                                >
+                                                    <AlertCircle className="mr-2 h-4 w-4" /> Complain
+                                                </Button>
+                                                {pickup.paymentStatus !== 'Paid' && (
+                                                    <Button
+                                                        onClick={() => handlePayment(pickup._id)}
+                                                        className="bg-green-500 hover:bg-green-700"
+                                                    >
+                                                        <CreditCard className="mr-2 h-4 w-4" /> Pay
+                                                    </Button>
+                                                )}
+                                            </>
                                         )}
                                     </td>
                                 </tr>
@@ -295,6 +312,7 @@ const AdditionalPickupList = () => {
                     </table>
                 </div>
             )}
+
             <Dialog open={isAddingComplaint} onOpenChange={setIsAddingComplaint}>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>

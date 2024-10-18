@@ -176,7 +176,7 @@ const GarbageCollectorDashboard = ({ onLogout }) => {
                         <h2 className="mb-4 text-lg font-semibold">Collection Schedule</h2>
                         <p className="text-base text-gray-700">View your upcoming garbage collection schedule easily:</p>
                         <button
-                            onClick={() => navigate('/additional-pickups')}
+                            onClick={() => navigate('/collector-additional-pickups')}
                             className="mt-4 rounded bg-green-500 px-6 py-3 text-lg text-white transition duration-300 hover:bg-green-600"
                         >
                             View Schedule
