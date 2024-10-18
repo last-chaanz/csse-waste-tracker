@@ -34,6 +34,8 @@ const WasteBinForm = () => {
       image,
       status: 'Empty',
       userId,
+      collectionDay: 'To Be Scheduled',
+      collectionStatus: 'Scheduled',
     };
 
     try {

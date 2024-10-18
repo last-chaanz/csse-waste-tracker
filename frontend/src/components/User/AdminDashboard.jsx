@@ -8,10 +8,10 @@ const AdminDashboard = () => {
     const [showAddCollectorModal, setShowAddCollectorModal] = useState(false);
     const [showUpdateCollectorModal, setShowUpdateCollectorModal] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
-    const [newCollector, setNewCollector] = useState({ name: '', email: '', password: '', address: '' });
+    const [newCollector, setNewCollector] = useState({ name: '', email: '', password: '', address: '' ,role: 'collector', userType: 'collector'});
     const [collectors, setCollectors] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [currentCollectorId, setCurrentCollectorId] = useState(null);
+    const [id, setCurrentCollectorId] = useState(null);
     const [user, setUser] = useState({ 
         email: 'admin@example.com', 
         name: 'Admin', 
@@ -34,7 +34,7 @@ const AdminDashboard = () => {
             }
 
             const response = await axios.get('http://localhost:4000/api/auth/user', {
-                headers: { Authorization: `${token}` },
+                headers: { Authorization: `Bearer ${token}` },
             });
             setUser(response.data);
             setUpdatedUser({ name: response.data.name, address: response.data.address || '' });
@@ -75,8 +75,8 @@ const AdminDashboard = () => {
                     address: updatedUser.address,
                 },
                 {
-                    headers: { Authorization: ` ${token}` },
-                }
+                    headers: { Authorization: `Bearer ${token}` },
+                },
             );
 
             notification.success({ message: 'Success', description: 'User information updated successfully.' });
@@ -90,30 +90,27 @@ const AdminDashboard = () => {
         }
     };
 
-     const handleDeleteCollector =async (id)=>{
-        setCollectors((prevCollectors) =>
-            prevCollectors.filter((collector) => collector.id !== id)
-        );
-    
-      await axios.delete(`http://localhost:4000/api/auth/${id}`)
-            .then(response => {
-                console.log('Collector deleted successfully', response);
-                 fetchCollectors();
+    const handleDeleteCollector = async (id) => {
+        setCollectors((prevCollectors) => prevCollectors.filter((collector) => collector.id !== id));
 
+        await axios
+            .delete(`http://localhost:4000/api/auth/${id}`)
+            .then((response) => {
+                console.log('Collector deleted successfully', response);
+                fetchCollectors();
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Error deleting collector', error);
             });
-            
-            if (response.status === 200) {
-                alert('Profile updated successfully!'); // Show success message
-                setShowUpdateModal(false);
-                fetchUser();
 
-            } else {
-                alert('Failed to update profile. Please try again.');
-            }
-     }
+        if (response.status === 200) {
+            alert('Profile updated successfully!'); // Show success message
+            setShowUpdateModal(false);
+            fetchUser();
+        } else {
+            alert('Failed to update profile. Please try again.');
+        }
+    };
 
     const handleLogout = () => {
         navigate('/');
@@ -162,14 +159,16 @@ const AdminDashboard = () => {
             name: collector.name,
             email: collector.email,
             address: collector.address,
-            role: "collector",
-            userType: "collector",
+            role: collector.role || 'collector', 
         });
+        console.log(newCollector.role); // Check role value here
         setShowUpdateCollectorModal(true);
     };
 
     const handleAddCollector = async () => {
         try {
+            console.log(newCollector);
+            
             const response = await axios.post('http://localhost:4000/api/auth/register', newCollector);
             notification.success({ message: 'Success', description: 'Collector added successfully.' });
             setShowAddCollectorModal(false);
@@ -183,9 +182,18 @@ const AdminDashboard = () => {
     };
 
     const handleUpdateCollector = async () => {
+        if (!id) {
+            notification.error({
+                message: 'Error',
+                description: 'Collector ID is missing',
+            });
+            return;
+        }
+    
         try {
-            const response = await axios.put(`http://localhost:4000/api/auth/${currentCollectorId}`, newCollector);
+            const response = await axios.put(`http://localhost:4000/api/auth/${id}`, newCollector);
             notification.success({ message: 'Success', description: 'Collector updated successfully.' });
+            
             setShowUpdateCollectorModal(false);
             fetchCollectors(); // Refresh collectors list
         } catch (error) {
@@ -198,10 +206,10 @@ const AdminDashboard = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4 text-center">Admin Dashboard</h1>
-            <div className="bg-white shadow-lg rounded-lg p-6 mb-4 flex items-center">
+            <h1 className="mb-4 text-center text-2xl font-bold">Admin Dashboard</h1>
+            <div className="mb-4 flex items-center rounded-lg bg-white p-6 shadow-lg">
                 {user && user.profilePicture && (
-                    <img src={user.profilePicture} alt="Profile" className="w-16 h-16 rounded-full mr-4" />
+                    <img src={user.profilePicture} alt="Profile" className="mr-4 h-16 w-16 rounded-full" />
                 )}
                 <div className="flex-grow">
                     <p className="text-gray-700">Email: {user?.email}</p>
@@ -218,16 +226,12 @@ const AdminDashboard = () => {
             </div>
 
             {/* Manage Collectors */}
-            <div className="bg-white shadow-lg rounded-lg p-6 mb-4">
-                <h2 className="text-xl font-semibold mb-4">Manage Garbage Collectors</h2>
-                <Button type="primary" onClick={() => setShowAddCollectorModal(true)}>Add Collector</Button>
-                <Table
-                    dataSource={collectors}
-                    columns={columns}
-                    loading={loading}
-                    rowKey="_id"
-                    style={{ marginTop: '16px' }}
-                />
+            <div className="mb-4 rounded-lg bg-white p-6 shadow-lg">
+                <h2 className="mb-4 text-xl font-semibold">Manage Garbage Collectors</h2>
+                <Button type="primary" onClick={() => setShowAddCollectorModal(true)}>
+                    Add Collector
+                </Button>
+                <Table dataSource={collectors} columns={columns} loading={loading} rowKey="_id" style={{ marginTop: '16px' }} />
             </div>
 
             {/* Add Collector Modal */}
@@ -237,29 +241,29 @@ const AdminDashboard = () => {
                 onCancel={() => setShowAddCollectorModal(false)}
                 footer={null}
             >
-                <Input 
-                    placeholder="Name" 
-                    value={newCollector.name} 
-                    onChange={(e) => setNewCollector({ ...newCollector, name: e.target.value })} 
+                <Input
+                    placeholder="Name"
+                    value={newCollector.name}
+                    onChange={(e) => setNewCollector({ ...newCollector, name: e.target.value })}
                     style={{ marginBottom: '10px' }}
                 />
-                <Input 
-                    placeholder="Email" 
-                    value={newCollector.email} 
-                    onChange={(e) => setNewCollector({ ...newCollector, email: e.target.value })} 
+                <Input
+                    placeholder="Email"
+                    value={newCollector.email}
+                    onChange={(e) => setNewCollector({ ...newCollector, email: e.target.value })}
                     style={{ marginBottom: '10px' }}
                 />
-                <Input 
-                    placeholder="Password" 
-                    type="password" 
-                    value={newCollector.password} 
-                    onChange={(e) => setNewCollector({ ...newCollector, password: e.target.value })} 
+                <Input
+                    placeholder="Password"
+                    type="password"
+                    value={newCollector.password}
+                    onChange={(e) => setNewCollector({ ...newCollector, password: e.target.value })}
                     style={{ marginBottom: '10px' }}
                 />
-                <Input 
-                    placeholder="Address" 
-                    value={newCollector.address} 
-                    onChange={(e) => setNewCollector({ ...newCollector, address: e.target.value })} 
+                <Input
+                    placeholder="Address"
+                    value={newCollector.address}
+                    onChange={(e) => setNewCollector({ ...newCollector, address: e.target.value })}
                     style={{ marginBottom: '20px' }}
                 />
                 <div className="flex justify-end">
@@ -279,22 +283,22 @@ const AdminDashboard = () => {
                 onCancel={() => setShowUpdateCollectorModal(false)}
                 footer={null}
             >
-                <Input 
-                    placeholder="Name" 
-                    value={newCollector.name} 
-                    onChange={(e) => setNewCollector({ ...newCollector, name: e.target.value })} 
+                <Input
+                    placeholder="Name"
+                    value={newCollector.name}
+                    onChange={(e) => setNewCollector({ ...newCollector, name: e.target.value })}
                     style={{ marginBottom: '10px' }}
                 />
-                <Input 
-                    placeholder="Email" 
-                    value={newCollector.email} 
-                    onChange={(e) => setNewCollector({ ...newCollector, email: e.target.value })} 
+                <Input
+                    placeholder="Email"
+                    value={newCollector.email}
+                    onChange={(e) => setNewCollector({ ...newCollector, email: e.target.value })}
                     style={{ marginBottom: '10px' }}
                 />
-                <Input 
-                    placeholder="Address" 
-                    value={newCollector.address} 
-                    onChange={(e) => setNewCollector({ ...newCollector, address: e.target.value })} 
+                <Input
+                    placeholder="Address"
+                    value={newCollector.address}
+                    onChange={(e) => setNewCollector({ ...newCollector, address: e.target.value })}
                     style={{ marginBottom: '20px' }}
                 />
                 <div className="flex justify-end">
@@ -308,22 +312,17 @@ const AdminDashboard = () => {
             </Modal>
 
             {/* Update Profile Modal */}
-            <Modal
-                title="Update Profile"
-                visible={showUpdateModal}
-                onCancel={() => setShowUpdateModal(false)}
-                footer={null}
-            >
-                <Input 
-                    placeholder="Name" 
-                    value={updatedUser.name} 
-                    onChange={(e) => setUpdatedUser({ ...updatedUser, name: e.target.value })} 
+            <Modal title="Update Profile" visible={showUpdateModal} onCancel={() => setShowUpdateModal(false)} footer={null}>
+                <Input
+                    placeholder="Name"
+                    value={updatedUser.name}
+                    onChange={(e) => setUpdatedUser({ ...updatedUser, name: e.target.value })}
                     style={{ marginBottom: '10px' }}
                 />
-                <Input 
-                    placeholder="Address" 
-                    value={updatedUser.address} 
-                    onChange={(e) => setUpdatedUser({ ...updatedUser, address: e.target.value })} 
+                <Input
+                    placeholder="Address"
+                    value={updatedUser.address}
+                    onChange={(e) => setUpdatedUser({ ...updatedUser, address: e.target.value })}
                     style={{ marginBottom: '20px' }}
                 />
                 <div className="flex justify-end">
