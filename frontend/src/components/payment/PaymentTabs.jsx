@@ -66,7 +66,7 @@ const PaymentTabs = () => {
                             >
                                 Due Payments ⏱️
                             </button>
-                            <span className="mb-2 mt-2 h-10 border-r-4 border-slate-400 px-1"></span>
+                            <span className="mb-2 mt-2 h-10 border-x-4 border-slate-400 px-1"></span>
                             <button
                                 onClick={() => setActiveTab('history')}
                                 className={`border-b-2 px-1 py-4 text-sm font-medium ${
