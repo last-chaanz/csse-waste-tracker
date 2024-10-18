@@ -44,6 +44,10 @@ const additionalPickupSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  collectorAccepted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const AdditionalPickup = mongoose.model(

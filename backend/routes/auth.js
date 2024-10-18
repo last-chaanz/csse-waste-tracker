@@ -80,11 +80,16 @@ router.post(
         return res.status(400).json({ msg: "Invalid credentials" });
       }
       const token = jwt.sign(
-        { userId: user._id, role: user.role },
+        { userId: user._id, role: user.role, location: user.address },
         JWT_SECRET,
-        { expiresIn: "1h" }
+        { expiresIn: "10d" }
       );
-      res.status(200).json({ token, role: user.role, userType: user.userType });
+      res.status(200).json({
+        token,
+        role: user.role,
+        userType: user.userType,
+        address: user.address,
+      });
     } catch (err) {
       res.status(500).json({ msg: "Server error" });
     }
@@ -256,7 +261,7 @@ router.get("/collectors", async (req, res) => {
   }
 });
 
-router.get('/userAddress/:userId', async (req, res) => {
+router.get("/userAddress/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
 

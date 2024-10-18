@@ -7,6 +7,8 @@ const {
   updatePaymentStatus,
   updatePickupStatus,
   addComplaint,
+  acceptAdditionalPickup,
+  completePickup,
 } = require("../controller/additionalPickupController");
 
 const router = express.Router();
@@ -19,11 +21,17 @@ router.get(
   getAdditionalPickupsByUserId
 );
 router.put("/additional-pickup/:id/pay", authMiddleware, updatePaymentStatus);
-router.put(
-  "/additional-pickup/:id/complete",
-  authMiddleware,
-  updatePickupStatus
-);
+// router.put(
+//   "/additional-pickup/:id/complete",
+//   authMiddleware,
+//   updatePickupStatus
+// );
 router.post("/additional-pickup/:id/complain", authMiddleware, addComplaint);
+router.put(
+  "/additional-pickup/:id/accept",
+  authMiddleware,
+  acceptAdditionalPickup
+);
+router.put("/additional-pickup/:id/complete", authMiddleware, completePickup);
 
 module.exports = router;

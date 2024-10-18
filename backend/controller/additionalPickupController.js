@@ -58,7 +58,7 @@ exports.getAdditionalPickups = async (req, res) => {
         .json({ message: "Forbidden: Access restricted to collectors" });
     }
 
-    const pickups = await AdditionalPickup.find();
+    const pickups = await AdditionalPickup.find({ location: user.location });
     res.status(200).json(pickups);
   } catch (error) {
     console.error("Error in getAdditionalPickups:", error);
@@ -184,6 +184,50 @@ exports.addComplaint = async (req, res) => {
     res.status(200).json(pickup);
   } catch (error) {
     console.error("Error in addComplaint:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.acceptAdditionalPickup = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const pickup = await AdditionalPickup.findById(id);
+
+    if (!pickup) {
+      return res.status(404).json({ message: "Pickup not found" });
+    }
+
+    pickup.collectorAccepted = true;
+    await pickup.save();
+
+    res.status(200).json(pickup);
+  } catch (error) {
+    console.error("Error in acceptAdditionalPickup:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.completePickup = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const pickup = await AdditionalPickup.findById(id);
+
+    if (!pickup) {
+      return res.status(404).json({ message: "Pickup not found" });
+    }
+
+    if (!pickup.collectorAccepted) {
+      return res
+        .status(400)
+        .json({ message: "Pickup must be accepted before completion" });
+    }
+
+    pickup.pickupStatus = "Completed";
+    await pickup.save();
+
+    res.status(200).json(pickup);
+  } catch (error) {
+    console.error("Error in completePickup:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
