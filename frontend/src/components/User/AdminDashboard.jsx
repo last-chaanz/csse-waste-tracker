@@ -83,7 +83,7 @@ const AdminDashboard = () => {
                 return;
             }
             const response = await axios.get('http://localhost:4000/api/auth/user', {
-                headers: { Authorization: `${token}` },
+                headers: { Authorization: `Bearer ${token}` },
             });
             setUser(response.data);
             setUpdatedUser({ name: response.data.name, address: response.data.address || '' });

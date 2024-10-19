@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode'; 
+import { jwtDecode } from 'jwt-decode';
+import LoginImage from '../../images/logoImage.jpeg'; // Import the logo image
+import { useNavigate } from 'react-router-dom';
 
 const WasteBinForm = () => {
   const [location, setLocation] = useState('');
   const [image, setImage] = useState('');
   const [binType, setBinType] = useState('Food');
   const [message, setMessage] = useState('');
+
+  const navigate = useNavigate();
+
+  const handleNavigation = () => {
+    navigate('/user/dashboard');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,6 +42,8 @@ const WasteBinForm = () => {
       image,
       status: 'Empty',
       userId,
+      collectionDay: 'To Be Scheduled',
+      collectionStatus: 'Scheduled',
     };
 
     try {
@@ -54,15 +64,56 @@ const WasteBinForm = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-200 to-blue-300">
+      {/* Navigation Bar */}
+      <nav className="bg-white p-4 shadow-md">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            {/* Logo Image with navigation */}
+            <img
+              src={LoginImage}
+              alt="CountryClean.LK"
+              className="mr-3 h-16 cursor-pointer"
+              onClick={handleNavigation}
+            />
+            <h1
+              className="text-xl font-bold cursor-pointer"
+              onClick={handleNavigation}
+            >
+              CountryClean.LK
+            </h1>
+          </div>
+          <div className="space-x-4">
+            <button
+              onClick={() => navigate('/FetchBin')}
+              className="rounded-md px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
+            >
+              Manage Bin
+            </button>
+            <button
+              onClick={() => navigate('/additional-pickups')}
+              className="rounded-md px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
+            >
+              View Schedule
+            </button>
+            <button
+              onClick={() => navigate('/payments')}
+              className="rounded-md px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
+            >
+              Payments
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-100 to-gray-200">
         <form
           className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-3xl border border-gray-200 transform hover:scale-105 transition-transform duration-300"
           onSubmit={handleSubmit}
         >
           <p className="text-center text-lg text-gray-700 mb-6 px-6">
-          Help us keep your community clean by registering your waste bin. This will allow us to monitor waste levels and ensure timely collection. Please provide the necessary details below to get started.
-        </p>
-          <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-6">Register Waste Bin</h2>
+            Help us keep your community clean by registering your waste bin. This will allow us to monitor waste levels and ensure timely collection. Please provide the necessary details below to get started.
+          </p>
+          <h2 className="text-3xl font-extrabold text-center text-green-400 mb-6">Register Waste Bin</h2>
 
           {message && (
             <div className="text-center text-red-600 font-semibold mb-4">
@@ -119,12 +170,30 @@ const WasteBinForm = () => {
 
           <button
             type="submit"
-            className="w-full py-3 rounded-lg bg-blue-500 hover:bg-blue-700 text-white font-bold transition-colors duration-300"
+            className="w-full py-3 rounded-lg bg-green-700 hover:bg-green-500 text-white font-bold transition-colors duration-300"
           >
             Register Waste Bin
           </button>
         </form>
       </div>
+      {/* Footer */}
+      <footer className="bg-white p-4 text-center shadow-md">
+        <p className="text-gray-600">© 2024 CountryClean.LK. All rights reserved.</p>
+        <p className="text-gray-600">
+          Follow us on{' '}
+          <a href="#" className="text-blue-500 hover:underline">
+            Facebook
+          </a>
+          ,{' '}
+          <a href="#" className="text-blue-500 hover:underline">
+            Twitter
+          </a>
+          ,{' '}
+          <a href="#" className="text-blue-500 hover:underline">
+            Instagram
+          </a>
+        </p>
+      </footer>
     </>
   );
 };

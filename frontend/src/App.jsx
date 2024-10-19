@@ -10,7 +10,12 @@ import CollectorDashboard from './components/User/CollectorDashboard';
 
 import RegisterBin from './components/WasteBin/registerBin';
 import FetchBin from './components/WasteBin/fetchBin';
+import CollectorBin from './components/WasteBin/collectorBin';
 import NotFound from './components/User/NotFound';
+
+import PaymentTabs from './components/payment/PaymentTabs';
+import AdditionalPickupList from './pages/AdditionalPickupList';
+import CollectorAdditionalPickups from './pages/CollectorAdditionalPickups';
 
 function App() {
     const [user, setUser] = useState(null);
@@ -34,22 +39,25 @@ function App() {
 
     return (
         <Router>
-            <div className="container mx-auto mt-8">
-                <Routes>
-                    <Route path="/" element={<LoginForm />} />
-                    <Route path="/register" element={<RegistrationForm />} />
-                    <Route path="/forgot-password" element={<ForgotPasswordForm />} />
-                    <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
-                    <Route path="/user/dashboard" element={<UserDashboard user={user} onLogout={handleLogout} />} />
-                    <Route path="/admin/dashboard" element={<AdminDashboard user={user} onLogout={handleLogout} />} />
-                    <Route path="/collector/dashboard" element={<CollectorDashboard user={user} onLogout={handleLogout} />} />
+            <Routes>
+                <Route path="/" element={<LoginForm />} />
+                <Route path="/register" element={<RegistrationForm />} />
+                <Route path="/forgot-password" element={<ForgotPasswordForm />} />
+                <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
+                <Route path="/user/dashboard" element={<UserDashboard user={user} onLogout={handleLogout} />} />
+                <Route path="/admin/dashboard" element={<AdminDashboard user={user} onLogout={handleLogout} />} />
+                <Route path="/collector/dashboard" element={<CollectorDashboard user={user} onLogout={handleLogout} />} />
 
-                    <Route path="/registerBin" element={<RegisterBin />} />
-                    <Route path="/fetchBin" element={<FetchBin />} />
+                <Route path="/registerBin" element={<RegisterBin />} />
+                <Route path="/fetchBin" element={<FetchBin />} />
+                <Route path="/collectorBin" element={<CollectorBin />} />
 
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
-            </div>
+                <Route path="/payments" element={<PaymentTabs />} />
+                <Route path="/additional-pickups" element={<AdditionalPickupList />} />
+                <Route path="/collector-additional-pickups" element={<CollectorAdditionalPickups />} />
+
+                <Route path="*" element={<NotFound />} />
+            </Routes>
         </Router>
     );
 }

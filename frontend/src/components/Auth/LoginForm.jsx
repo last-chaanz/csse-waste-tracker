@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 // import React, { useState } from 'react';
 // import { Link, useNavigate } from 'react-router-dom';
 // import axios from 'axios';
@@ -187,13 +188,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import LoginImage from './images/logoImage.jpg';
+import LoginImage from '../../images/logoImage.jpg';
 
 const LoginForm = () => {
     const navigate = useNavigate();
     const [credentials, setCredentials] = useState({
         email: '',
-        password: ''
+        password: '',
     });
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
@@ -252,7 +253,7 @@ const LoginForm = () => {
             localStorage.setItem('token', token);
             const userData = {
                 role,
-                userType
+                userType,
             };
             localStorage.setItem('user', JSON.stringify(userData));
 
@@ -282,12 +283,12 @@ const LoginForm = () => {
     return (
         <>
             {showAlert && (
-                <div className="fixed inset-0 flex items-center justify-center z-50">
-                    <div className="bg-white p-5 rounded shadow-md">
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <div className="rounded bg-white p-5 shadow-md">
                         <h2 className="text-lg font-bold">Success!</h2>
                         <p>You have logged in successfully.</p>
                         <button
-                            className="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+                            className="mt-4 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
                             onClick={handleAlertOk}
                         >
                             OK
@@ -295,33 +296,24 @@ const LoginForm = () => {
                     </div>
                 </div>
             )}
-            <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-300">
-                <div className="flex items-center max-w-4xl w-full shadow-lg bg-white rounded-xl">
-                    <div className="w-1/2 hidden md:flex flex-col justify-center p-12 bg-gradient-to-b from-blue-300 to-blue-700 text-white rounded-l-xl transform scale-110 shadow-2xl">
-                        <h2 className="text-4xl font-bold mb-4">Let's Keep Our Country Clean!
-                        </h2>
-                        <p className="text-lg mb-6">
-                        "Your small actions today can lead to a cleaner tomorrow. Together, let's keep our nation beautiful!"
+            <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-blue-100 to-blue-300">
+                <div className="flex w-full max-w-4xl items-center rounded-xl bg-white shadow-lg">
+                    <div className="hidden w-1/2 scale-110 transform flex-col justify-center rounded-l-xl bg-gradient-to-b from-blue-300 to-blue-700 p-12 text-white shadow-2xl md:flex">
+                        <h2 className="mb-4 text-4xl font-bold">Let's Keep Our Country Clean!</h2>
+                        <p className="mb-6 text-lg">
+                            "Your small actions today can lead to a cleaner tomorrow. Together, let's keep our nation beautiful!"
                         </p>
                         <p className="text-lg">Join us and start exploring!</p>
                     </div>
-                    <form
-                        onSubmit={handleSubmit}
-                        className="w-full md:w-1/2 p-8"
-                    >
-                        <div className="flex justify-center mb-6">
+                    <form onSubmit={handleSubmit} className="w-full p-8 md:w-1/2">
+                        <div className="mb-6 flex justify-center">
                             <img src={LoginImage} alt="Logo" className="h-32" />
                         </div>
-                        <h2 className="text-3xl font-bold text-center text-blue-700 mb-6">Welcome Back!</h2>
-                        <p className="text-center text-black mb-6">
-                        Please enter your credentials to access your account.</p>
-                        {loginError && (
-                            <div className="bg-red-100 text-red-700 p-3 rounded mb-4">
-                                {loginError}
-                            </div>
-                        )}
+                        <h2 className="mb-6 text-center text-3xl font-bold text-blue-700">Welcome Back!</h2>
+                        <p className="mb-6 text-center text-black">Please enter your credentials to access your account.</p>
+                        {loginError && <div className="mb-4 rounded bg-red-100 p-3 text-red-700">{loginError}</div>}
                         <div className="mb-4">
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700">
                                 Email
                             </label>
                             <input
@@ -330,15 +322,15 @@ const LoginForm = () => {
                                 value={credentials.email}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                className={`border p-3 w-full rounded-xl focus:outline-none focus:ring ${
+                                className={`w-full rounded-xl border p-3 focus:outline-none focus:ring ${
                                     errors.email ? 'border-red-500' : 'border-gray-300'
                                 }`}
                                 placeholder="Enter your email"
                             />
-                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                            {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-700">
                                 Password
                             </label>
                             <input
@@ -347,25 +339,25 @@ const LoginForm = () => {
                                 value={credentials.password}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                className={`border p-3 w-full rounded-xl focus:outline-none focus:ring ${
+                                className={`w-full rounded-xl border p-3 focus:outline-none focus:ring ${
                                     errors.password ? 'border-red-500' : 'border-gray-300'
                                 }`}
                                 placeholder="Enter your password"
                             />
-                            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+                            {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
                         </div>
                         <button
                             type="submit"
-                            className={`w-full bg-blue-700 text-white py-3 rounded-xl hover:bg-blue-800 transition-all duration-300 transform hover:scale-105 ${
-                                loading ? 'opacity-50 cursor-not-allowed' : ''
+                            className={`w-full transform rounded-xl bg-blue-700 py-3 text-white transition-all duration-300 hover:scale-105 hover:bg-blue-800 ${
+                                loading ? 'cursor-not-allowed opacity-50' : ''
                             }`}
                             disabled={loading}
                         >
                             {loading ? 'Logging in...' : 'Login'}
                         </button>
-                        <p className="mt-8 text-sm text-gray-600 text-center">
+                        <p className="mt-8 text-center text-sm text-gray-600">
                             Don’t have an account?{' '}
-                            <Link to="/register" className="text-blue-700 hover:underline font-semibold">
+                            <Link to="/register" className="font-semibold text-blue-700 hover:underline">
                                 Sign Up
                             </Link>
                         </p>
@@ -563,4 +555,3 @@ export default LoginForm;
 // };
 
 // export default LoginForm;
-

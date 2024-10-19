@@ -72,7 +72,7 @@ const UserDashboard = ({ onLogout }) => {
             }
 
             const response = await axios.get('http://localhost:4000/api/auth/user', {
-                headers: { Authorization: `${token}` },
+                headers: { Authorization: `Bearer ${token}` },
             });
 
             setUser(response.data);
@@ -86,7 +86,7 @@ const UserDashboard = ({ onLogout }) => {
     const fetchStatistics = async () => {
         try {
             const response = await axios.get('http://localhost:4000/api/statistics', {
-                headers: { Authorization: `${token}` },
+                headers: { Authorization: `Bearer ${token}` },
             });
             setStatistics(response.data);
         } catch (error) {
@@ -138,7 +138,7 @@ const UserDashboard = ({ onLogout }) => {
                 return;
             }
             const response = await axios.put('http://localhost:4000/api/auth/user', updatedUser, {
-                headers: { Authorization: `${token}` },
+                headers: { Authorization: `Bearer ${token}` },
             });
 
             if (response.status === 200) {
@@ -307,16 +307,4 @@ const UserDashboard = ({ onLogout }) => {
 };
 
 export default UserDashboard;
-
-
-
-
-
-
-
-
-
-
-
-
 
