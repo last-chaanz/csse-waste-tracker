@@ -15,25 +15,8 @@ const BASE_URL = process.env.BASE_URL || "http://localhost:4000";
 // User Registration Route
 router.post(
   "/register",
-  // [
-  //   body("name").notEmpty().withMessage("Name is required"),
-  //   body("email").isEmail().withMessage("Invalid email"),
-  //   body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters"),
-  //   body("address").notEmpty().withMessage("Address is required"),
-  //   body("role").notEmpty().withMessage("Role is required"),
-  //   body("userType")
-  //     .if(body("role").equals("user"))
-  //     .notEmpty()
-  //     .withMessage("User type is required for user role"),
-  // ],
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const { name, email, password, address, role , userType } = req.body;
-console.log('✌️name --->', name);
 
     try {
       let user = await User.findOne({ email });
@@ -44,7 +27,7 @@ console.log('✌️name --->', name);
 
       res.status(201).json({ msg: "Registered successfully" });
     } catch (err) {
-console.log('✌️err --->', err);
+      console.log('✌️err --->', err);
       res.status(500).json({ msg: "Server error", error: err.message });
     }
   }
