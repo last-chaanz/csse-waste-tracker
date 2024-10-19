@@ -12,6 +12,8 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { jwtDecode } from 'jwt-decode';
 import { cn } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
+import LoginImage from '../images/logoImage.jpeg'; 
 
 const AdditionalPickupList = () => {
     const [pickups, setPickups] = useState([]);
@@ -29,6 +31,12 @@ const AdditionalPickupList = () => {
         description: '',
     });
     const { toast } = useToast();
+
+    const navigate = useNavigate();
+
+    const handleNavigation = () => {
+      navigate('/user/dashboard');
+    };
 
     useEffect(() => {
         fetchPickupsAndBins();
@@ -170,6 +178,48 @@ const AdditionalPickupList = () => {
     };
 
     return (
+        <>
+         {/* Navigation Bar */}
+      <nav className="bg-white p-4 shadow-md">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          {/* Logo Image with navigation */}
+          <img
+            src={LoginImage}
+            alt="CountryClean.LK"
+            className="mr-3 h-16 cursor-pointer"
+            onClick={handleNavigation}
+          />
+          <h1
+            className="text-xl font-bold cursor-pointer"
+            onClick={handleNavigation}
+          >
+            CountryClean.LK
+          </h1>
+        </div>
+        <div className="space-x-4">
+          <button
+            onClick={() => navigate('/FetchBin')}
+            className="rounded-md px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
+          >
+            Manage Bin
+          </button>
+          <button
+            onClick={() => navigate('/additional-pickups')}
+            className="rounded-md px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
+          >
+            View Schedule
+          </button>
+          <button
+            onClick={() => navigate('/payments')}
+            className="rounded-md px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
+          >
+            Payments
+          </button>
+        </div>
+      </div>
+    </nav>
+
         <div className="container mx-auto mt-10 px-4 sm:px-6 lg:px-8">
             <div className="rounded-lg bg-white shadow-xl">
                 <div className="px-6 py-8 sm:px-10">
@@ -411,6 +461,26 @@ const AdditionalPickupList = () => {
                 </DialogContent>
             </Dialog>
         </div>
+
+         {/* Footer */}
+         <footer className="bg-white p-4 text-center shadow-md">
+                <p className="text-gray-600">© 2024 CountryClean.LK. All rights reserved.</p>
+                <p className="text-gray-600">
+                    Follow us on{' '}
+                    <a href="#" className="text-blue-500 hover:underline">
+                        Facebook
+                    </a>
+                    ,{' '}
+                    <a href="#" className="text-blue-500 hover:underline">
+                        Twitter
+                    </a>
+                    ,{' '}
+                    <a href="#" className="text-blue-500 hover:underline">
+                        Instagram
+                    </a>
+                </p>
+            </footer>
+        </>
     );
 };
 
