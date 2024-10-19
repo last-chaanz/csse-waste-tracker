@@ -3,7 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import Avatar from 'react-avatar';
 import axios from 'axios';
 import { HiOutlineCog } from 'react-icons/hi'; // Import a settings icon
-import LoginImage from '../../components/Auth/images/logoImage.jpg'; // Import the logo image
+import LoginImage from '../../images/logoImage.jpeg'; // Import the logo image
+import DashboardImage from '../../assets/dash-imagess.png'; // Import the dashboard image
+import NavBar from '../common/Navbar';
+import Footer from '../common/Footer';
 
 const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
     const [name, setName] = useState(user.name || '');
@@ -18,15 +21,15 @@ const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-md max-w-md w-full">
-                <h2 className="text-2xl font-bold mb-4">Update User Information</h2>
+            <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
+                <h2 className="mb-4 text-2xl font-bold">Update User Information</h2>
                 <div className="mb-4">
                     <label className="block text-gray-700">Name</label>
                     <input
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="mt-1 block w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
                 <div className="mb-4">
@@ -35,12 +38,19 @@ const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
                         type="text"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
-                        className="mt-1 block w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
                 <div className="flex justify-end">
-                    <button onClick={onClose} className="mr-2 rounded bg-gray-300 px-4 py-2 hover:bg-gray-400 transition">Cancel</button>
-                    <button onClick={handleUpdate} className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 transition">Update</button>
+                    <button onClick={onClose} className="mr-2 rounded bg-gray-300 px-4 py-2 transition hover:bg-gray-400">
+                        Cancel
+                    </button>
+                    <button
+                        onClick={handleUpdate}
+                        className="rounded bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
+                    >
+                        Update
+                    </button>
                 </div>
             </div>
         </div>
@@ -116,12 +126,30 @@ const UserDashboard = ({ onLogout }) => {
     }, []);
 
     const tips = [
-        { title: '🌱 Keep Your Waste Separated', content: 'Separate recyclables from general waste to help the environment and promote recycling.' },
-        { title: '🧼 Regular Cleaning', content: 'Clean your bins regularly to prevent odors and pests and keep your environment fresh.' },
-        { title: '📅 Stay Informed', content: 'Stay updated on local waste management regulations and best practices for effective waste disposal.' },
-        { title: '🍏 Healthy Living', content: 'Maintain a healthy lifestyle by staying active, eating clean, and being mindful of your surroundings.' },
-        { title: '🌍 Community Involvement', content: 'Participate in community clean-up events to help keep your neighborhood clean and vibrant.' },
-        { title: '♻️ Sustainable Practices', content: 'Adopt sustainable practices at home to reduce waste and promote health in your community.' },
+        {
+            title: '🌱 Keep Your Waste Separated',
+            content: 'Separate recyclables from general waste to help the environment and promote recycling.',
+        },
+        {
+            title: '🧼 Regular Cleaning',
+            content: 'Clean your bins regularly to prevent odors and pests and keep your environment fresh.',
+        },
+        {
+            title: '📅 Stay Informed',
+            content: 'Stay updated on local waste management regulations and best practices for effective waste disposal.',
+        },
+        {
+            title: '🍏 Healthy Living',
+            content: 'Maintain a healthy lifestyle by staying active, eating clean, and being mindful of your surroundings.',
+        },
+        {
+            title: '🌍 Community Involvement',
+            content: 'Participate in community clean-up events to help keep your neighborhood clean and vibrant.',
+        },
+        {
+            title: '♻️ Sustainable Practices',
+            content: 'Adopt sustainable practices at home to reduce waste and promote health in your community.',
+        },
     ];
 
     const handleLogout = () => {
@@ -170,62 +198,46 @@ const UserDashboard = ({ onLogout }) => {
     }
 
     return (
-        <div className="flex flex-col h-screen">
+        <div className="flex h-screen flex-col">
             {/* Navigation Bar */}
-            <nav className="bg-white shadow-md p-4">
-                <div className="flex justify-between items-center">
-                    <div className="flex items-center">
-                        {/* Logo Image */}
-                        <img src={LoginImage} alt="CountryClean.LK" className="h-16 mr-3" />
-                        <h1 className="text-xl font-bold">CountryClean.LK</h1>
-                    </div>
-                    <div className="space-x-4">
-                        <button
-                            onClick={() => navigate('/FetchBin')}
-                            className="text-gray-600 hover:text-white hover:bg-blue-500 transition-colors duration-300 rounded-md px-4 py-2"
-                        >
-                            Manage Bin
-                        </button>
-                        <button
-                            onClick={() => navigate('/collection-schedule')}
-                            className="text-gray-600 hover:text-white hover:bg-blue-500 transition-colors duration-300 rounded-md px-4 py-2"
-                        >
-                            View Schedule
-                        </button>
-                        <button
-                            onClick={() => navigate('/payments')}
-                            className="text-gray-600 hover:text-white hover:bg-blue-500 transition-colors duration-300 rounded-md px-4 py-2"
-                        >
-                            Payments
-                        </button>
-                        <button
-                            onClick={handleLogout}
-                            className="text-red-600 hover:text-white hover:bg-red-500 transition-colors duration-300 rounded-md px-4 py-2"
-                        >
-                            Logout
-                        </button>
-                    </div>
-                </div>
-            </nav>
+            <NavBar handleLogout={handleLogout} />
 
             {/* Main Content */}
-            <div className="flex flex-1 bg-gray-100">
-                <main className="flex-1 p-6">
-                    <header className="flex items-center justify-between bg-white p-4 shadow-md">
-                        <div className="flex items-center">
-                            {/* User Avatar and Greeting */}
-                            <Avatar name={user.name || 'User'} size="40" round={true} className="mr-3" />
-                            <h1 className="text-xl font-bold">Hi {user.name || 'User'}</h1>
-                            <button onClick={() => setShowUpdateModal(true)} className="ml-4 p-2 text-gray-600 hover:text-gray-800">
-                                <HiOutlineCog className="w-6 h-6" />
+            {/* <div className="flex flex-1 bg-gray-100">
+                <main className="flex-1 p-6"> */}
+            {/* <header className="flex items-center justify-between rounded-md bg-gray-100 px-6 py-4 shadow-md">
+                        <div className="flex items-center space-x-4"> */}
+            {/* User Avatar and Greeting */}
+            {/* <Avatar name={user.name || 'User'} size="40" round={true} />
+                            <h1 className="text-xl font-medium text-gray-800 dark:text-white">{`Hi, ${user.name || 'User'}`}</h1>
+                            <button
+                                onClick={() => setShowUpdateModal(true)}
+                                className="text-gray-500 hover:text-gray-700 focus:outline-none dark:text-gray-300 dark:hover:text-gray-500"
+                                type="button"
+                            >
+                                <HiOutlineCog className="h-6 w-6" />
                             </button>
                         </div>
-                        <div className="text-right">
-                            <p className="text-sm text-gray-600">{currentDateTime}</p>
+                        <div className="hidden items-center text-sm text-gray-500 dark:text-gray-300 sm:flex">
+                            <p>{currentDateTime}</p>
                         </div>
-                    </header>
-
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    </header> */}
+            <br></br>
+            <div className="flex items-start justify-center gap-[75px] p-10">
+                <div className="flex flex-col items-start justify-center gap-4">
+                    <span className="mt-20 text-3xl font-bold tracking-wide text-sky-900">
+                        Start Your <span className="text-2 xl font-bold text-green-500">Waste Management</span> Journey Here
+                    </span>
+                    <button
+                        onClick={() => navigate('/FetchBin')}
+                        className="hover:text-gray rounded-xl border-2 border-sky-900 px-8 py-2 text-lg hover:border-4"
+                    >
+                        Click Here
+                    </button>
+                </div>
+                <img src={DashboardImage} alt="Dashboard" className="w-3/4 rounded-lg" />
+            </div>
+            {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         <div className="rounded-lg bg-white p-6 shadow-md">
                             <h3 className="text-lg font-semibold">Manage Your Bin</h3>
                             <p className="text-gray-600">Manage your waste bin and schedule pickups.</p>
@@ -256,10 +268,10 @@ const UserDashboard = ({ onLogout }) => {
                                 Go to Payments
                             </button>
                         </div>
-                    </div>
+                    </div> */}
 
-                    {/* Statistics Section */}
-                    {/* <section className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Statistics Section */}
+            {/* <section className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div className="bg-white p-4 rounded-lg shadow">
                             <h2 className="text-lg font-bold">Total Collections</h2>
                             <p className="text-xl">{statistics.totalCollections}</p>
@@ -278,22 +290,19 @@ const UserDashboard = ({ onLogout }) => {
                         </div>
                     </section> */}
 
-                    {/* Tips Section */}
-                    <section className="mt-6 bg-white p-4 rounded-lg shadow">
+            {/* Tips Section */}
+            {/* <section className="mt-6 rounded-lg bg-white p-4 shadow">
                         <h2 className="text-lg font-bold">Tip of the Moment</h2>
                         <div className="mt-2">
                             <h3 className="text-md font-semibold">{tips[currentTipIndex]?.title}</h3>
                             <p className="text-sm text-gray-600">{tips[currentTipIndex]?.content}</p>
                         </div>
-                    </section>
-                </main>
-            </div>
+                    </section> */}
+            {/* </main>
+            </div> */}
 
             {/* Footer */}
-             <footer className="bg-white p-4 shadow-md text-center">
-                 <p className="text-gray-600">© 2024 CountryClean.LK. All rights reserved.</p>
-                 <p className="text-gray-600">Follow us on <a href="#" className="text-blue-500 hover:underline">Facebook</a>, <a href="#" className="text-blue-500 hover:underline">Twitter</a>, <a href="#" className="text-blue-500 hover:underline">Instagram</a></p>
-             </footer>
+            <Footer />
 
             {/* Update User Modal */}
             <UpdateUserModal
@@ -307,4 +316,3 @@ const UserDashboard = ({ onLogout }) => {
 };
 
 export default UserDashboard;
-
