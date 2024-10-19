@@ -101,15 +101,69 @@ const CollectorAdditionalPickups = () => {
         }
     };
 
+    const renderPickupCard = (pickup) => (
+        <div key={pickup._id} className="mb-4 rounded-lg border border-gray-300 bg-white p-4 shadow-md">
+            <div className="mb-2 flex justify-between">
+                <span className="font-semibold">{pickup.wasteType}</span>
+                <span
+                    className={`rounded-full px-2 py-1 text-xs ${pickup.pickupStatus === 'Completed' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800'}`}
+                >
+                    {pickup.pickupStatus}
+                </span>
+            </div>
+            <div className="mb-2 text-sm">
+                <p>Date: {format(new Date(pickup.pickupDate), 'PPP')}</p>
+                <p>Payment: {pickup.paymentStatus}</p>
+                <p className="truncate">Description: {pickup.description}</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+                {!showCompleted && (
+                    <>
+                        {pickup.pickupStatus === 'Pending' && !pickup.collectorAccepted && (
+                            <Button
+                                onClick={() => handleAcceptPickup(pickup._id)}
+                                className="flex-grow bg-green-500 text-xs hover:bg-green-700"
+                            >
+                                <CheckCircle className="mr-1 h-3 w-3" /> Accept
+                            </Button>
+                        )}
+                        {pickup.pickupStatus === 'Pending' && pickup.collectorAccepted && (
+                            <Button
+                                onClick={() => handleCompletePickup(pickup._id)}
+                                className="flex-grow bg-blue-500 text-xs hover:bg-blue-700"
+                            >
+                                <Truck className="mr-1 h-3 w-3" /> Pickup Done
+                            </Button>
+                        )}
+                    </>
+                )}
+                {pickup.complaint && (
+                    <Button
+                        onClick={() => {
+                            setSelectedPickup(pickup);
+                            setIsViewingComplaints(true);
+                        }}
+                        className="flex-grow bg-yellow-500 text-xs hover:bg-yellow-700"
+                    >
+                        <AlertCircle className="mr-1 h-3 w-3" /> View Complaints
+                    </Button>
+                )}
+            </div>
+        </div>
+    );
+
     return (
-        <div className="container mx-auto mt-10 rounded-lg bg-white p-6 shadow-lg">
-            <h1 className="mb-6 text-3xl font-bold text-teal-600">Additional Pickups</h1>
-            <div className="mb-4 flex items-center justify-between">
+        <div className="container mx-auto mt-4 rounded-lg bg-white p-4 shadow-lg md:mt-10 md:p-6">
+            <h1 className="mb-4 text-2xl font-bold text-teal-600 md:mb-6 md:text-3xl">Additional Pickups</h1>
+            <div className="mb-4 flex flex-col items-start justify-between space-y-2 md:flex-row md:items-center md:space-y-0">
                 <div className="flex items-center">
-                    <MapPin className="mr-2 h-5 w-5 text-teal-500" />
-                    <span className="text-lg font-semibold">Your Location: {collectorLocation}</span>
+                    <MapPin className="mr-2 h-4 w-4 text-teal-500 md:h-5 md:w-5" />
+                    <span className="text-base font-semibold md:text-lg">Your Location: {collectorLocation}</span>
                 </div>
-                <Button onClick={() => setShowCompleted(!showCompleted)} className="bg-blue-500 hover:bg-blue-700">
+                <Button
+                    onClick={() => setShowCompleted(!showCompleted)}
+                    className="w-full bg-blue-500 text-sm hover:bg-blue-700 md:w-auto"
+                >
                     {showCompleted ? 'Show Active Pickups' : 'Show Completed Pickups'}
                 </Button>
             </div>
@@ -118,70 +172,87 @@ const CollectorAdditionalPickups = () => {
                     <Loader2 className="h-8 w-8 animate-spin text-teal-500" />
                 </div>
             ) : (
-                <div className="overflow-x-auto">
-                    <table className="min-w-full border-collapse overflow-hidden rounded-lg border border-gray-300 shadow-md">
-                        <thead className="bg-teal-500 text-white">
-                            <tr>
-                                <th className="border border-gray-300 p-4 text-left text-sm md:text-base">Waste Type</th>
-                                <th className="border border-gray-300 p-4 text-left text-sm md:text-base">Pickup Date</th>
-                                <th className="border border-gray-300 p-4 text-left text-sm md:text-base">Status</th>
-                                <th className="border border-gray-300 p-4 text-left text-sm md:text-base">Payment</th>
-                                <th className="border border-gray-300 p-4 text-left text-sm md:text-base">Description</th>
-                                <th className="border border-gray-300 p-4 text-left text-sm md:text-base">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredPickups.map((pickup) => (
-                                <tr
-                                    key={pickup._id}
-                                    className={`transition duration-200 hover:bg-teal-100 ${
-                                        pickup.collectorAccepted ? 'bg-green-100' : ''
-                                    }`}
-                                >
-                                    <td className="border border-gray-300 p-4 text-sm md:text-base">{pickup.wasteType}</td>
-                                    <td className="border border-gray-300 p-4 text-sm md:text-base">
-                                        {format(new Date(pickup.pickupDate), 'PPP')}
-                                    </td>
-                                    <td className="border border-gray-300 p-4 text-sm md:text-base">{pickup.pickupStatus}</td>
-                                    <td className="border border-gray-300 p-4 text-sm md:text-base">{pickup.paymentStatus}</td>
-                                    <td className="border border-gray-300 p-4 text-sm md:text-base">{pickup.description}</td>
-                                    <td className="border border-gray-300 p-4 text-sm md:text-base">
-                                        {!showCompleted && (
-                                            <>
-                                                {pickup.pickupStatus === 'Pending' && !pickup.collectorAccepted && (
-                                                    <Button
-                                                        onClick={() => handleAcceptPickup(pickup._id)}
-                                                        className="mr-2 bg-green-500 hover:bg-green-700"
-                                                    >
-                                                        <CheckCircle className="mr-2 h-4 w-4" /> Accept
-                                                    </Button>
-                                                )}
-                                                {pickup.pickupStatus === 'Pending' && pickup.collectorAccepted && (
-                                                    <Button
-                                                        onClick={() => handleCompletePickup(pickup._id)}
-                                                        className="mr-2 bg-blue-500 hover:bg-blue-700"
-                                                    >
-                                                        <Truck className="mr-2 h-4 w-4" /> Pickup Done
-                                                    </Button>
-                                                )}
-                                            </>
-                                        )}
-                                        {pickup.complaint && (
-                                            <Button
-                                                onClick={() => {
-                                                    setSelectedPickup(pickup);
-                                                    setIsViewingComplaints(true);
-                                                }}
-                                                className="bg-yellow-500 hover:bg-yellow-700"
-                                            >
-                                                <AlertCircle className="mr-2 h-4 w-4" /> View Complaints
-                                            </Button>
-                                        )}
-                                    </td>
+                <div>
+                    <div className="hidden md:block">
+                        <table className="min-w-full border-collapse overflow-hidden rounded-lg border border-gray-300 shadow-md">
+                            <thead className="bg-teal-500 text-white">
+                                <tr>
+                                    <th className="border border-gray-300 p-2 text-left text-sm md:p-4 md:text-base">
+                                        Waste Type
+                                    </th>
+                                    <th className="border border-gray-300 p-2 text-left text-sm md:p-4 md:text-base">
+                                        Pickup Date
+                                    </th>
+                                    <th className="border border-gray-300 p-2 text-left text-sm md:p-4 md:text-base">Status</th>
+                                    <th className="border border-gray-300 p-2 text-left text-sm md:p-4 md:text-base">Payment</th>
+                                    <th className="border border-gray-300 p-2 text-left text-sm md:p-4 md:text-base">
+                                        Description
+                                    </th>
+                                    <th className="border border-gray-300 p-2 text-left text-sm md:p-4 md:text-base">Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {filteredPickups.map((pickup) => (
+                                    <tr
+                                        key={pickup._id}
+                                        className={`transition duration-200 hover:bg-teal-100 ${
+                                            pickup.collectorAccepted ? 'bg-green-100' : ''
+                                        }`}
+                                    >
+                                        <td className="border border-gray-300 p-2 text-sm md:p-4 md:text-base">
+                                            {pickup.wasteType}
+                                        </td>
+                                        <td className="border border-gray-300 p-2 text-sm md:p-4 md:text-base">
+                                            {format(new Date(pickup.pickupDate), 'PPP')}
+                                        </td>
+                                        <td className="border border-gray-300 p-2 text-sm md:p-4 md:text-base">
+                                            {pickup.pickupStatus}
+                                        </td>
+                                        <td className="border border-gray-300 p-2 text-sm md:p-4 md:text-base">
+                                            {pickup.paymentStatus}
+                                        </td>
+                                        <td className="border border-gray-300 p-2 text-sm md:p-4 md:text-base">
+                                            {pickup.description}
+                                        </td>
+                                        <td className="border border-gray-300 p-2 text-sm md:p-4 md:text-base">
+                                            {!showCompleted && (
+                                                <>
+                                                    {pickup.pickupStatus === 'Pending' && !pickup.collectorAccepted && (
+                                                        <Button
+                                                            onClick={() => handleAcceptPickup(pickup._id)}
+                                                            className="mr-2 bg-green-500 text-xs hover:bg-green-700 md:text-sm"
+                                                        >
+                                                            <CheckCircle className="mr-1 h-3 w-3 md:h-4 md:w-4" /> Accept
+                                                        </Button>
+                                                    )}
+                                                    {pickup.pickupStatus === 'Pending' && pickup.collectorAccepted && (
+                                                        <Button
+                                                            onClick={() => handleCompletePickup(pickup._id)}
+                                                            className="mr-2 bg-blue-500 text-xs hover:bg-blue-700 md:text-sm"
+                                                        >
+                                                            <Truck className="mr-1 h-3 w-3 md:h-4 md:w-4" /> Pickup Done
+                                                        </Button>
+                                                    )}
+                                                </>
+                                            )}
+                                            {pickup.complaint && (
+                                                <Button
+                                                    onClick={() => {
+                                                        setSelectedPickup(pickup);
+                                                        setIsViewingComplaints(true);
+                                                    }}
+                                                    className="bg-yellow-500 text-xs hover:bg-yellow-700 md:text-sm"
+                                                >
+                                                    <AlertCircle className="mr-1 h-3 w-3 md:h-4 md:w-4" /> View Complaints
+                                                </Button>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="md:hidden">{filteredPickups.map(renderPickupCard)}</div>
                 </div>
             )}
             <Dialog open={isViewingComplaints} onOpenChange={setIsViewingComplaints}>
