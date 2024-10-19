@@ -2,45 +2,33 @@ const nodemailer = require("nodemailer");
 
 // Nodemailer configuration
 const transporter = nodemailer.createTransport({
-  host: "smtp-mail.outlook.com",
+  host: 'sandbox.smtp.mailtrap.io',
   port: 587,
-  secure: false, // true for 465, false for other ports like 587
   auth: {
-    user: 'sliit_thuwa@outlook.com',
-    pass: 'thuwa123',
+    user: '7594405701db5f',
+    pass: 'e776b7d333f984',
   },
 });
 
 // Function to send emails
 const sendEmail = async (to, subject, text, html) => {
   try {
-    const nodemailer = require('nodemailer');
 
-    let mailTransporter =
-        nodemailer.createTransport(
-            {
-                service: 'gmail',
-                auth: {
-                    user: 'thalathuwa@gmail.com',
-                    pass: 'thala@123'
-                }
-            }
-        );
-    
     let mailDetails = {
-        from: 'thalathuwa@gmail.com',
-        to: 'thuwakaran0915@gmail.com',
-        subject: 'Test mail',
-        text: 'Node.js testing mail for GeeksforGeeks'
+        from: 'no-reply@example.com',
+        to,
+        subject,
+        text,
+        html
     };
     
-    mailTransporter
+    transporter
         .sendMail(mailDetails,
             function (err, data) {
                 if (err) {
-                    console.log('Error Occurs');
+                    console.log('Error Occurs',err);
                 } else {
-                    console.log('Email sent successfully');
+                    console.log('Email sent successfully',data);
                 }
             });
 

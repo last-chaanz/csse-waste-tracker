@@ -1,8 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Avatar from 'react-avatar';
 import axios from 'axios';
+import 'chart.js/auto';
+import LoginImage from '../../components/Auth/images/logoImage.jpg'; // Ensure the path is correct
+import { Bar, Pie } from 'react-chartjs-2';
 
 const GarbageCollectorDashboard = ({ onLogout }) => {
     const navigate = useNavigate();
@@ -13,6 +15,8 @@ const GarbageCollectorDashboard = ({ onLogout }) => {
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [updatedUser, setUpdatedUser] = useState({ name: '', email: '', phone: '' });
     const token = localStorage.getItem('token');
+
+    // Fetch user data
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -37,8 +41,9 @@ const GarbageCollectorDashboard = ({ onLogout }) => {
             }
         };
         fetchUser();
-    }, []);
+    }, [token]);
 
+    // Tips array for user engagement
     const tips = [
         {
             title: '🌱 Keep Your Waste Separated',
@@ -66,6 +71,7 @@ const GarbageCollectorDashboard = ({ onLogout }) => {
         },
     ];
 
+    // Cycling through tips
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentTipIndex((prevIndex) => (prevIndex + 1) % tips.length);
@@ -73,33 +79,30 @@ const GarbageCollectorDashboard = ({ onLogout }) => {
         return () => clearInterval(interval);
     }, []);
 
+    // Handle user logout
     const handleLogout = () => {
         onLogout();
         localStorage.removeItem('user');
         navigate('/');
     };
 
+    // Update user profile
     const handleUpdateUser = async () => {
-        localStorage.setItem('user', JSON.stringify(updatedUser));
-        setShowUpdateModal(false);
-        setUser(updatedUser);
-
         try {
             if (!token) {
                 setError('No token found. Please login.');
-                setLoading(false);
                 return;
             }
-            const response = await axios.put(`http://localhost:4000/api/auth/user`, updatedUser, {
+            const response = await axios.put('http://localhost:4000/api/auth/user', updatedUser, {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Make sure to include 'Bearer' if needed by your API
+                    Authorization: `${token}`,
                 },
             });
 
             if (response.status === 200) {
-                alert('Profile updated successfully!'); // Show success message
+                alert('Profile updated successfully!');
                 setShowUpdateModal(false);
-                fetchUser();
+                setUser(updatedUser);
             } else {
                 alert('Failed to update profile. Please try again.');
             }
@@ -109,178 +112,189 @@ const GarbageCollectorDashboard = ({ onLogout }) => {
         }
     };
 
+    // Sample data for charts
+    const barData = {
+        labels: ['Food Bin', 'Recyclable Bin', 'Non-Recyclable Bin', 'Organi Bin'],
+        datasets: [
+            {
+                label: 'Garbage Collected (kg)',
+                data: [65, 59, 80, 81],
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+            },
+        ],
+    };
+
+    const pieData = {
+        labels: ['Recyclable', 'Non-Recyclable', 'Organic'],
+        datasets: [
+            {
+                data: [300, 50, 100],
+                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'],
+            },
+        ],
+    };
+
+    // Loading state
     if (loading) {
-        return (
-            <div className="flex h-screen items-center justify-center bg-gray-100">
-                <div className="text-lg text-blue-500">Loading...</div>
-            </div>
-        );
+        return <div className="flex h-screen items-center justify-center bg-gray-100">Loading...</div>;
     }
 
+    // Error state
     if (error) {
-        return (
-            <div className="flex h-screen items-center justify-center bg-gray-100">
-                <div className="text-lg text-red-500">{error}</div>
-            </div>
-        );
-    }
-
-    if (!user) {
-        return (
-            <div className="flex h-screen items-center justify-center bg-gray-100">
-                <div className="text-lg text-red-500">Error: No user data found. Please log in again.</div>
-            </div>
-        );
+        return <div className="flex h-screen items-center justify-center bg-gray-100 text-red-500">{error}</div>;
     }
 
     return (
-        <div className="flex h-screen flex-col bg-gray-100">
-            {/* Header Section */}
-            <header className="flex items-center justify-between bg-white p-4 shadow-md">
-                <div className="flex items-center">
-                    <Avatar name={user.name || 'User'} size="40" round={true} className="mr-3" />
-                    <h1 className="text-xl font-bold">Hi Collector {user.name || 'User'}</h1>
-                    <button
-                        type="button"
-                        className="ml-3 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-                        onClick={() => setShowUpdateModal(true)}
-                    >
-                        Update Profile
-                    </button>
-                </div>
-                <button
-                    onClick={handleLogout}
-                    className="rounded bg-red-500 px-4 py-2 text-white transition duration-300 hover:bg-red-600"
-                >
-                    Logout
-                </button>
-            </header>
-
-            {/* Body Section */}
-            <main className="flex-grow overflow-y-auto p-6">
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    {/* Waste Bin Registration Card */}
-                    <div className="transform rounded-lg bg-white p-8 shadow-lg transition-transform hover:scale-105 hover:shadow-2xl">
-                        <h2 className="mb-4 text-lg font-semibold">Manage Waste Bin</h2>
-                        <p className="text-base text-gray-700">Mange waste bin to schedule that are assigned to me.</p>
-                        <button
-                            onClick={() => navigate('/collectorBin')}
-                            className="mt-4 rounded bg-blue-500 px-6 py-3 text-lg text-white transition duration-300 hover:bg-blue-600"
-                        >
-                            Bins assigned to me
-                        </button>
+        <div className="flex h-screen flex-col">
+            <div className="flex flex-grow">
+                {/* Sidebar */}
+                <aside className="flex w-64 flex-col bg-blue-800 text-white shadow-lg">
+                    <div className="p-6">
+                        <h2 className="text-center text-xl font-bold">Collector Dashboard</h2>
                     </div>
+                    <nav className="flex-grow">
+                        <ul>
+                            <li className="cursor-pointer p-4 hover:bg-blue-600" onClick={() => window.location.reload()}>
+                                Dashboard
+                            </li>
+                            <li className="cursor-pointer p-4 hover:bg-blue-600" onClick={() => navigate('/collectorBin')}>
+                                Register Bin
+                            </li>
+                            <li
+                                className="cursor-pointer p-4 hover:bg-blue-600"
+                                onClick={() => navigate('/collector-additional-pickups')}
+                            >
+                                Collection Schedule
+                            </li>
+                            <li className="cursor-pointer p-4 hover:bg-blue-600" onClick={() => navigate('/payments')}>
+                                Payments
+                            </li>
+                            <li className="cursor-pointer p-4 hover:bg-red-600" onClick={handleLogout}>
+                                Logout
+                            </li>
+                        </ul>
+                    </nav>
+                </aside>
 
-                    {/* Collection Schedule Card */}
-                    <div className="transform rounded-lg bg-white p-8 shadow-lg transition-transform hover:scale-105 hover:shadow-2xl">
-                        <h2 className="mb-4 text-lg font-semibold">Collection Schedule</h2>
-                        <p className="text-base text-gray-700">View your upcoming garbage collection schedule easily:</p>
-                        <button
-                            onClick={() => navigate('/collector-additional-pickups')}
-                            className="mt-4 rounded bg-green-500 px-6 py-3 text-lg text-white transition duration-300 hover:bg-green-600"
-                        >
-                            View Schedule
-                        </button>
-                    </div>
-
-                    {/* Payment Card */}
-                    <div className="transform rounded-lg bg-white p-8 shadow-lg transition-transform hover:scale-105 hover:shadow-2xl">
-                        <h2 className="mb-4 text-lg font-semibold">Payment</h2>
-                        <p className="text-base text-gray-700">Manage your garbage collection payments conveniently:</p>
-                        <button
-                            onClick={() => navigate('/payments')}
-                            className="mt-4 rounded bg-yellow-500 px-6 py-3 text-lg text-white transition duration-300 hover:bg-yellow-600"
-                        >
-                            Go to Payments
-                        </button>
-                    </div>
-                </div>
-
-                {/* Cleanliness and Health Tips Section */}
-                <section className="mt-8 rounded-lg bg-gray-50 p-6 shadow-md">
-                    <h2 className="mb-4 text-center text-2xl font-bold">🌟 Cleanliness & Health Tips</h2>
-                    <div className="transform rounded-lg bg-white p-6 shadow-lg transition-transform hover:shadow-2xl">
-                        <h3 className="mb-3 text-xl font-semibold">{tips[currentTipIndex].title}</h3>
-                        <p className="text-lg text-gray-700">{tips[currentTipIndex].content}</p>
-                    </div>
-                </section>
-
-                {/* Community Initiatives Section */}
-                <section className="mt-10">
-                    <h2 className="mb-4 text-lg font-semibold">Community Initiatives</h2>
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        <div className="rounded-lg bg-white p-6 shadow-lg transition-transform hover:scale-105 hover:shadow-2xl">
-                            <h3 className="mb-2 text-xl font-semibold">🌍 Participate in Community Clean-Up Days</h3>
-                            <p className="text-gray-700">
-                                Join us for our upcoming clean-up days and make a difference in your community!
-                            </p>
-                        </div>
-                        <div className="rounded-lg bg-white p-6 shadow-lg transition-transform hover:scale-105 hover:shadow-2xl">
-                            <h3 className="mb-2 text-xl font-semibold">🍏 Healthy Living Workshops</h3>
-                            <p className="text-gray-700">Attend our workshops on healthy living, nutrition, and wellness.</p>
-                        </div>
-                        <div className="rounded-lg bg-white p-6 shadow-lg transition-transform hover:scale-105 hover:shadow-2xl">
-                            <h3 className="mb-2 text-xl font-semibold">♻️ Recycling Drives</h3>
-                            <p className="text-gray-700">Get involved in our recycling drives to promote sustainability!</p>
-                        </div>
-                    </div>
-                </section>
-            </main>
-
-            {/* Footer Section */}
-            <footer className="bg-teal-500 p-4 text-center text-white">
-                <p>&copy; 2024 Garbage Management. All rights reserved.</p>
-            </footer>
-
-            {/* Update Modal */}
-            {showUpdateModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="rounded-lg bg-white p-6 shadow-lg">
-                        <h2 className="mb-4 text-xl font-bold">Update Profile</h2>
-                        <form>
-                            <input
-                                type="text"
-                                placeholder="Name"
-                                value={updatedUser.name}
-                                onChange={(e) => setUpdatedUser({ ...updatedUser, name: e.target.value })}
-                                className="mb-3 w-full rounded border p-2"
-                            />
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                value={updatedUser.email}
-                                onChange={(e) => setUpdatedUser({ ...updatedUser, email: e.target.value })}
-                                className="mb-3 w-full rounded border p-2"
-                            />
-                            <input
-                                type="phone"
-                                placeholder="Phone"
-                                value={updatedUser.phone}
-                                onChange={(e) => setUpdatedUser({ ...updatedUser, phone: e.target.value })}
-                                className="mb-3 w-full rounded border p-2"
-                            />
-                            <div className="flex justify-end">
-                                <button
-                                    type="button"
-                                    onClick={() => setShowUpdateModal(false)}
-                                    className="mr-2 rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={handleUpdateUser}
-                                    className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-                                >
-                                    Save
-                                </button>
+                {/* Main Content */}
+                <div className="flex flex-grow flex-col">
+                    {/* Header */}
+                    <header className="bg-white p-4 shadow-md">
+                        <div className="flex flex-col items-center">
+                            <div className="flex items-center justify-center space-x-3">
+                                <img src={LoginImage} alt="Logo" className="h-16 w-16" />
+                                <h1 className="text-2xl font-bold">CountryClean.LK</h1>
                             </div>
-                        </form>
+                            <div className="mt-2 flex items-center space-x-3">
+                                <Avatar name={user.name || 'User'} size="40" round={true} />
+                                <h2 className="text-lg font-semibold">Hi, {user.name || 'User'}</h2>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Body */}
+                    <main className="flex-grow overflow-y-auto bg-gray-100 p-6">
+                        {/* Analytical Views */}
+                        <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                            <div className="rounded-lg bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                                <h3 className="mb-4 text-lg font-semibold">Total Bins Registered</h3>
+                                <p className="text-2xl font-bold text-blue-600">120</p>
+                            </div>
+                            <div className="rounded-lg bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                                <h3 className="mb-4 text-lg font-semibold">Garbage Collected This Month (kg)</h3>
+                                <p className="text-2xl font-bold text-blue-600">2450 kg</p>
+                            </div>
+                            <div className="rounded-lg bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                                <h3 className="mb-4 text-lg font-semibold">Pending Bin Registrations</h3>
+                                <p className="text-2xl font-bold text-blue-600">5</p>
+                            </div>
+                        </section>
+
+                        {/* Charts */}
+                        <section className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+                            <div className="rounded-lg bg-white p-6 shadow-lg">
+                                <h3 className="mb-4 text-center text-lg font-semibold">Garbage Collected Per Bin</h3>
+                                <Bar data={barData} options={{ responsive: true }} />
+                            </div>
+                            <div className="rounded-lg bg-white p-6 shadow-lg">
+                                <h3 className="mb-4 text-center text-lg font-semibold">Waste Type Distribution</h3>
+                                <Pie data={pieData} options={{ responsive: true }} />
+                            </div>
+                        </section>
+
+                        {/* User Tips */}
+                        <section className="mt-8 rounded-lg bg-white p-6 shadow-lg">
+                            <h3 className="mb-4 text-lg font-semibold">Tip of the Moment</h3>
+                            <div className="font-medium">
+                                <h4 className="text-lg">{tips[currentTipIndex].title}</h4>
+                                <p>{tips[currentTipIndex].content}</p>
+                            </div>
+                        </section>
+
+                        {/* Update Profile Modal */}
+                        {showUpdateModal && (
+                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                                <div className="w-80 rounded-lg bg-white p-6">
+                                    <h3 className="mb-4 text-lg font-semibold">Update Profile</h3>
+                                    <input
+                                        type="text"
+                                        placeholder="Name"
+                                        className="mb-2 w-full rounded border p-2"
+                                        value={updatedUser.name}
+                                        onChange={(e) => setUpdatedUser({ ...updatedUser, name: e.target.value })}
+                                    />
+                                    <input
+                                        type="email"
+                                        placeholder="Email"
+                                        className="mb-2 w-full rounded border p-2"
+                                        value={updatedUser.email}
+                                        onChange={(e) => setUpdatedUser({ ...updatedUser, email: e.target.value })}
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Phone"
+                                        className="mb-2 w-full rounded border p-2"
+                                        value={updatedUser.phone}
+                                        onChange={(e) => setUpdatedUser({ ...updatedUser, phone: e.target.value })}
+                                    />
+                                    <div className="mt-4 flex justify-between">
+                                        <button className="rounded bg-blue-500 p-2 text-white" onClick={handleUpdateUser}>
+                                            Update
+                                        </button>
+                                        <button className="rounded bg-gray-300 p-2" onClick={() => setShowUpdateModal(false)}>
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </main>
+                </div>
+            </div>
+
+            {/* Footer */}
+            <footer className="bg-blue-800 py-4 text-white">
+                <div className="container mx-auto text-center">
+                    <p>© {new Date().getFullYear()} CountryClean.LK. All Rights Reserved.</p>
+                    <p className="mt-2">Follow us on:</p>
+                    <div className="mt-2 flex justify-center space-x-4">
+                        <a href="#" className="hover:text-blue-400">
+                            Facebook
+                        </a>
+                        <a href="#" className="hover:text-blue-400">
+                            Twitter
+                        </a>
+                        <a href="#" className="hover:text-blue-400">
+                            Instagram
+                        </a>
                     </div>
                 </div>
-            )}
+            </footer>
         </div>
     );
 };
 
 export default GarbageCollectorDashboard;
+ 
