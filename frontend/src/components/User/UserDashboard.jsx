@@ -223,19 +223,22 @@ const UserDashboard = ({ onLogout }) => {
                         </div>
                     </header> */}
             <br></br>
-            <div className="flex items-start justify-center gap-[75px] p-10">
-                <div className="flex flex-col items-start justify-center gap-4">
-                    <span className="mt-20 text-3xl font-bold tracking-wide text-sky-900">
-                        Start Your <span className="text-2 xl font-bold text-green-500">Waste Management</span> Journey Here
-                    </span>
+            <div className="flex flex-col-reverse items-center justify-center gap-8 p-6 md:flex-row md:gap-12 md:p-10">
+                <div className="flex w-full flex-col items-center justify-center gap-4 text-center md:w-1/2 md:items-start md:text-left">
+                    <h1 className="mt-6 text-2xl font-bold tracking-wide text-sky-900 md:mt-0 md:text-3xl">
+                        Start Your <span className="text-xl font-bold text-green-500 md:text-2xl">Waste Management</span> Journey
+                        Here
+                    </h1>
                     <button
                         onClick={() => navigate('/FetchBin')}
-                        className="hover:text-gray rounded-xl border-2 border-sky-900 px-8 py-2 text-lg hover:border-4"
+                        className="hover:text-gray rounded-xl border-2 border-sky-900 px-6 py-2 text-base transition-all duration-300 hover:border-4 md:px-8 md:text-lg"
                     >
                         Click Here
                     </button>
                 </div>
-                <img src={DashboardImage} alt="Dashboard" className="w-3/4 rounded-lg border-b-4" />
+                <div className="w-full md:w-3/4">
+                    <img src={DashboardImage} alt="Dashboard" className="w-full rounded-lg border-b-4 shadow-md" />
+                </div>
             </div>
             {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         <div className="rounded-lg bg-white p-6 shadow-md">
