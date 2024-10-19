@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Input, Modal, Table, notification, Menu, Avatar } from 'antd'; // Import Avatar
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import LoginImage from '../../components/Auth/images/logoImage.jpg';
+// import LoginImage from '../../components/Auth/images/logoImage.jpg';
 
 // Sidebar component
 const Sidebar = ({ user, onViewCollectors, onAddCollector, onProfileClick, onLogout }) => (
@@ -32,13 +32,12 @@ const Sidebar = ({ user, onViewCollectors, onAddCollector, onProfileClick, onLog
     </div>
 );
 
-// Header component
-const Header = () => (
-    <div className="header bg-white shadow-md flex justify-center items-center p-4">
-        <img src={LoginImage} alt="Clean Country Logo" className="w-16 h-16 rounded mr-2" />
-        <h1 className="text-2xl font-bold">Clean Country.LK</h1>
-    </div>
-);
+// const Header = () => (
+//     <div className="header bg-white shadow-md flex justify-center items-center p-4">
+//         <img src={LoginImage} alt="Clean Country Logo" className="w-16 h-16 rounded mr-2" />
+//         <h1 className="text-2xl font-bold">Clean Country.LK</h1>
+//     </div>
+// );
 
 // Footer component
 const Footer = () => (
@@ -218,12 +217,12 @@ const AdminDashboard = () => {
                 onLogout={handleLogout}
             />
             <div className="flex-grow p-4">
-                <Header />
+                {/* <Header /> */}
                 <div className="bg-white shadow-lg rounded-lg p-6 mb-4">
                     <h2 className="text-3xl font-extrabold text-blue-600 text-center mb-4">
                         Manage Garbage Collectors
                     </h2>
-                    <h3 className="text-xl text-center mb-4">
+                    <h3 className="text-xl text-center mb-4" data-id="count">
                         Total Collectors: {collectorCount}
                     </h3>
                     <Input

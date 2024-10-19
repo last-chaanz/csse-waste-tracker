@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
-import LoginImage from '../../images/logoImage.jpeg';
 import NavBar from '../common/Navbar';
 import Footer from '../common/Footer';
 
@@ -15,10 +14,6 @@ const WasteBinList = () => {
     const [updatedLocation, setUpdatedLocation] = useState('');
     const [updatedBinType, setUpdatedBinType] = useState('');
     const navigate = useNavigate();
-
-    const handleNavigation = () => {
-        navigate('/user/dashboard');
-    };
 
     useEffect(() => {
         const fetchWasteBins = async () => {

@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Avatar from 'react-avatar';
 import axios from 'axios';
-import { HiOutlineCog } from 'react-icons/hi'; // Import a settings icon
-import LoginImage from '../../images/logoImage.jpeg'; // Import the logo image
-import DashboardImage from '../../assets/dash-imagess.png'; // Import the dashboard image
+import DashboardImage from '../../assets/dash-imagess.png'; 
 import NavBar from '../common/Navbar';
 import Footer from '../common/Footer';
 
-const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
+export const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
     const [name, setName] = useState(user.name || '');
     const [address, setAddress] = useState(user.address || '');
 
@@ -24,22 +21,22 @@ const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
             <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
                 <h2 className="mb-4 text-2xl font-bold">Update User Information</h2>
                 <div className="mb-4">
-                    <label className="block text-gray-700">Name</label>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                <label htmlFor="userName">Name</label>
+                <input
+                    id="userName"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
                 </div>
                 <div className="mb-4">
-                    <label className="block text-gray-700">Address</label>
-                    <input
-                        type="text"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                <label htmlFor="userAddress">Address</label>
+                <input
+                    id="userAddress"
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                />
                 </div>
                 <div className="flex justify-end">
                     <button onClick={onClose} className="mr-2 rounded bg-gray-300 px-4 py-2 transition hover:bg-gray-400">
@@ -223,20 +220,21 @@ const UserDashboard = ({ onLogout }) => {
                         </div>
                     </header> */}
             <br></br>
-            <div className="flex items-start justify-center gap-[75px] p-10">
-                <div className="flex flex-col items-start justify-center gap-4">
-                    <span className="mt-20 text-3xl font-bold tracking-wide text-sky-900">
-                        Start Your <span className="text-2 xl font-bold text-green-500">Waste Management</span> Journey Here
+            <div className="flex flex-col lg:flex-row items-start justify-center gap-8 lg:gap-[75px] p-6 lg:p-10">
+                <div className="flex flex-col items-center lg:items-start justify-center gap-4">
+                    <span className="mt-10 lg:mt-20 text-2xl lg:text-3xl font-bold tracking-wide text-sky-900 text-center lg:text-left">
+                        Start Your <span className="text-xl lg:text-2xl font-bold text-green-500">Waste Management</span> Journey Here
                     </span>
                     <button
                         onClick={() => navigate('/FetchBin')}
-                        className="hover:text-gray rounded-xl border-2 border-sky-900 px-8 py-2 text-lg hover:border-4"
+                        className="hover:text-gray rounded-xl border-2 border-sky-900 px-6 lg:px-8 py-2 text-base lg:text-lg hover:border-4"
                     >
                         Click Here
                     </button>
                 </div>
-                <img src={DashboardImage} alt="Dashboard" className="w-3/4 rounded-lg border-b-4" />
+                <img src={DashboardImage} alt="Dashboard" className="w-full lg:w-3/4 rounded-lg border-b-4 mt-6 lg:mt-0" />
             </div>
+
             {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         <div className="rounded-lg bg-white p-6 shadow-md">
                             <h3 className="text-lg font-semibold">Manage Your Bin</h3>
