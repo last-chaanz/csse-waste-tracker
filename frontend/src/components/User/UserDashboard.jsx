@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Avatar from 'react-avatar';
 import axios from 'axios';
 import { HiOutlineCog } from 'react-icons/hi'; // Import a settings icon
-import LoginImage from '../../images/logoImage.jpeg'; // Import the logo image
+import LoginImage from '../../components/Auth/images/logoImage.jpg'; // Import the logo image
 
 const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
     const [name, setName] = useState(user.name || '');
@@ -18,15 +18,15 @@ const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
-                <h2 className="mb-4 text-2xl font-bold">Update User Information</h2>
+            <div className="bg-white p-6 rounded-lg shadow-md max-w-md w-full">
+                <h2 className="text-2xl font-bold mb-4">Update User Information</h2>
                 <div className="mb-4">
                     <label className="block text-gray-700">Name</label>
                     <input
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
                 <div className="mb-4">
@@ -35,19 +35,12 @@ const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
                         type="text"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
-                        className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
                 <div className="flex justify-end">
-                    <button onClick={onClose} className="mr-2 rounded bg-gray-300 px-4 py-2 transition hover:bg-gray-400">
-                        Cancel
-                    </button>
-                    <button
-                        onClick={handleUpdate}
-                        className="rounded bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
-                    >
-                        Update
-                    </button>
+                    <button onClick={onClose} className="mr-2 rounded bg-gray-300 px-4 py-2 hover:bg-gray-400 transition">Cancel</button>
+                    <button onClick={handleUpdate} className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 transition">Update</button>
                 </div>
             </div>
         </div>
@@ -123,30 +116,12 @@ const UserDashboard = ({ onLogout }) => {
     }, []);
 
     const tips = [
-        {
-            title: '🌱 Keep Your Waste Separated',
-            content: 'Separate recyclables from general waste to help the environment and promote recycling.',
-        },
-        {
-            title: '🧼 Regular Cleaning',
-            content: 'Clean your bins regularly to prevent odors and pests and keep your environment fresh.',
-        },
-        {
-            title: '📅 Stay Informed',
-            content: 'Stay updated on local waste management regulations and best practices for effective waste disposal.',
-        },
-        {
-            title: '🍏 Healthy Living',
-            content: 'Maintain a healthy lifestyle by staying active, eating clean, and being mindful of your surroundings.',
-        },
-        {
-            title: '🌍 Community Involvement',
-            content: 'Participate in community clean-up events to help keep your neighborhood clean and vibrant.',
-        },
-        {
-            title: '♻️ Sustainable Practices',
-            content: 'Adopt sustainable practices at home to reduce waste and promote health in your community.',
-        },
+        { title: '🌱 Keep Your Waste Separated', content: 'Separate recyclables from general waste to help the environment and promote recycling.' },
+        { title: '🧼 Regular Cleaning', content: 'Clean your bins regularly to prevent odors and pests and keep your environment fresh.' },
+        { title: '📅 Stay Informed', content: 'Stay updated on local waste management regulations and best practices for effective waste disposal.' },
+        { title: '🍏 Healthy Living', content: 'Maintain a healthy lifestyle by staying active, eating clean, and being mindful of your surroundings.' },
+        { title: '🌍 Community Involvement', content: 'Participate in community clean-up events to help keep your neighborhood clean and vibrant.' },
+        { title: '♻️ Sustainable Practices', content: 'Adopt sustainable practices at home to reduce waste and promote health in your community.' },
     ];
 
     const handleLogout = () => {
@@ -163,7 +138,7 @@ const UserDashboard = ({ onLogout }) => {
                 return;
             }
             const response = await axios.put('http://localhost:4000/api/auth/user', updatedUser, {
-                headers: { Authorization: `${token}` },
+                headers: { Authorization: `Bearer ${token}` },
             });
 
             if (response.status === 200) {
@@ -195,37 +170,37 @@ const UserDashboard = ({ onLogout }) => {
     }
 
     return (
-        <div className="flex h-screen flex-col">
+        <div className="flex flex-col h-screen">
             {/* Navigation Bar */}
-            <nav className="bg-white p-4 shadow-md">
-                <div className="flex items-center justify-between">
+            <nav className="bg-white shadow-md p-4">
+                <div className="flex justify-between items-center">
                     <div className="flex items-center">
                         {/* Logo Image */}
-                        <img src={LoginImage} alt="CountryClean.LK" className="mr-3 h-16" />
+                        <img src={LoginImage} alt="CountryClean.LK" className="h-16 mr-3" />
                         <h1 className="text-xl font-bold">CountryClean.LK</h1>
                     </div>
                     <div className="space-x-4">
                         <button
                             onClick={() => navigate('/FetchBin')}
-                            className="rounded-md px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
+                            className="text-gray-600 hover:text-white hover:bg-blue-500 transition-colors duration-300 rounded-md px-4 py-2"
                         >
                             Manage Bin
                         </button>
                         <button
-                            onClick={() => navigate('/additional-pickups')}
-                            className="rounded-md px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
+                            onClick={() => navigate('/collection-schedule')}
+                            className="text-gray-600 hover:text-white hover:bg-blue-500 transition-colors duration-300 rounded-md px-4 py-2"
                         >
                             View Schedule
                         </button>
                         <button
                             onClick={() => navigate('/payments')}
-                            className="rounded-md px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
+                            className="text-gray-600 hover:text-white hover:bg-blue-500 transition-colors duration-300 rounded-md px-4 py-2"
                         >
                             Payments
                         </button>
                         <button
                             onClick={handleLogout}
-                            className="rounded-md px-4 py-2 text-red-600 transition-colors duration-300 hover:bg-red-500 hover:text-white"
+                            className="text-red-600 hover:text-white hover:bg-red-500 transition-colors duration-300 rounded-md px-4 py-2"
                         >
                             Logout
                         </button>
@@ -241,18 +216,14 @@ const UserDashboard = ({ onLogout }) => {
                             {/* User Avatar and Greeting */}
                             <Avatar name={user.name || 'User'} size="40" round={true} className="mr-3" />
                             <h1 className="text-xl font-bold">Hi {user.name || 'User'}</h1>
-                            <button
-                                onClick={() => setShowUpdateModal(true)}
-                                className="ml-4 p-2 text-gray-600 hover:text-gray-800"
-                            >
-                                <HiOutlineCog className="h-6 w-6" />
+                            <button onClick={() => setShowUpdateModal(true)} className="ml-4 p-2 text-gray-600 hover:text-gray-800">
+                                <HiOutlineCog className="w-6 h-6" />
                             </button>
                         </div>
                         <div className="text-right">
                             <p className="text-sm text-gray-600">{currentDateTime}</p>
                         </div>
                     </header>
-                    <br></br>
 
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         <div className="rounded-lg bg-white p-6 shadow-md">
@@ -308,7 +279,7 @@ const UserDashboard = ({ onLogout }) => {
                     </section> */}
 
                     {/* Tips Section */}
-                    <section className="mt-6 rounded-lg bg-white p-4 shadow">
+                    <section className="mt-6 bg-white p-4 rounded-lg shadow">
                         <h2 className="text-lg font-bold">Tip of the Moment</h2>
                         <div className="mt-2">
                             <h3 className="text-md font-semibold">{tips[currentTipIndex]?.title}</h3>
@@ -319,23 +290,10 @@ const UserDashboard = ({ onLogout }) => {
             </div>
 
             {/* Footer */}
-            <footer className="bg-white p-4 text-center shadow-md">
-                <p className="text-gray-600">© 2024 CountryClean.LK. All rights reserved.</p>
-                <p className="text-gray-600">
-                    Follow us on{' '}
-                    <a href="#" className="text-blue-500 hover:underline">
-                        Facebook
-                    </a>
-                    ,{' '}
-                    <a href="#" className="text-blue-500 hover:underline">
-                        Twitter
-                    </a>
-                    ,{' '}
-                    <a href="#" className="text-blue-500 hover:underline">
-                        Instagram
-                    </a>
-                </p>
-            </footer>
+             <footer className="bg-white p-4 shadow-md text-center">
+                 <p className="text-gray-600">© 2024 CountryClean.LK. All rights reserved.</p>
+                 <p className="text-gray-600">Follow us on <a href="#" className="text-blue-500 hover:underline">Facebook</a>, <a href="#" className="text-blue-500 hover:underline">Twitter</a>, <a href="#" className="text-blue-500 hover:underline">Instagram</a></p>
+             </footer>
 
             {/* Update User Modal */}
             <UpdateUserModal
@@ -349,3 +307,4 @@ const UserDashboard = ({ onLogout }) => {
 };
 
 export default UserDashboard;
+

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Avatar from 'react-avatar';
 import axios from 'axios';
-import { Bar, Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
-import LoginImage from '../../images/logoImage.jpeg'; // Ensure the path is correct
+import LoginImage from '../../components/Auth/images/logoImage.jpg'; // Ensure the path is correct
+import { Bar, Pie } from 'react-chartjs-2';
 
 const GarbageCollectorDashboard = ({ onLogout }) => {
     const navigate = useNavigate();
@@ -95,7 +95,7 @@ const GarbageCollectorDashboard = ({ onLogout }) => {
             }
             const response = await axios.put('http://localhost:4000/api/auth/user', updatedUser, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `${token}`,
                 },
             });
 
@@ -297,3 +297,4 @@ const GarbageCollectorDashboard = ({ onLogout }) => {
 };
 
 export default GarbageCollectorDashboard;
+ 
