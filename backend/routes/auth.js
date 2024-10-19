@@ -15,25 +15,8 @@ const BASE_URL = process.env.BASE_URL || "http://localhost:4000";
 // User Registration Route
 router.post(
   "/register",
-  // [
-  //   body("name").notEmpty().withMessage("Name is required"),
-  //   body("email").isEmail().withMessage("Invalid email"),
-  //   body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters"),
-  //   body("address").notEmpty().withMessage("Address is required"),
-  //   body("role").notEmpty().withMessage("Role is required"),
-  //   body("userType")
-  //     .if(body("role").equals("user"))
-  //     .notEmpty()
-  //     .withMessage("User type is required for user role"),
-  // ],
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { name, email, password, address, role, userType } = req.body;
-    // console.log('✌️name --->', name);
+    const { name, email, password, address, role , userType } = req.body;
 
     try {
       let user = await User.findOne({ email });
@@ -50,9 +33,82 @@ router.post(
       });
       await user.save();
 
+      const html=`
+      <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration of Garbage Collector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            padding: 20px;
+            line-height: 1.6;
+            color: #333333;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            color: #777777;
+            font-size: 12px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Registration of Garbage Collector</h2>
+        </div>
+        <div class="content">
+            <p>Hello,</p>
+            <p>We are pleased to inform you that you have been successfully added as a Garbage Collector. We welcome you to the team and appreciate your commitment to keeping our environment clean and green.</p>
+            <p>If you have any questions or need further assistance, please do not hesitate to reach out to us.</p>
+            <p>Your temporary details are here. please update your temp password</p>
+            <p>Email : ${email} </p>
+             <p>Passport : ${password} </p>
+            <p>Thank you for your valuable contribution!</p>
+            <p>Best regards,<br>Garbase Collector</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2024 Your Organization. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
+      `
+      await sendEmail(email,'Registration of Garbage Collector','You have been added to Garabe Collector',html)
       res.status(201).json({ msg: "Registered successfully" });
     } catch (err) {
-      console.log("✌️err --->", err);
+            console.log("✌️err --->", err);
       res.status(500).json({ msg: "Server error", error: err.message });
     }
   }

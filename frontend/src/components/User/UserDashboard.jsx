@@ -166,7 +166,7 @@ const UserDashboard = ({ onLogout }) => {
                 return;
             }
             const response = await axios.put('http://localhost:4000/api/auth/user', updatedUser, {
-                headers: { Authorization: `${token}` },
+                headers: { Authorization: `Bearer ${token}` },
             });
 
             if (response.status === 200) {
