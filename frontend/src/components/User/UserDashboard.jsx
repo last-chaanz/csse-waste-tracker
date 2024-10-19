@@ -235,7 +235,7 @@ const UserDashboard = ({ onLogout }) => {
                         Click Here
                     </button>
                 </div>
-                <img src={DashboardImage} alt="Dashboard" className="w-3/4 rounded-lg" />
+                <img src={DashboardImage} alt="Dashboard" className="w-3/4 rounded-lg border-b-4" />
             </div>
             {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         <div className="rounded-lg bg-white p-6 shadow-md">
