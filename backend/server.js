@@ -30,10 +30,12 @@ app.use(express.json()); // Parse JSON request bodies
 const authRoutes = require("./routes/auth");
 const binRoute = require("./routes/binRoute");
 const additionalPickupRoutes = require("./routes/additionalPickupRoutes");
+const paymentRoutes = require("./routes/paymentRoute");
 
 app.use("/api/auth", authRoutes);
 app.use("/api", binRoute);
 app.use("/api", additionalPickupRoutes);
+app.use("/api", paymentRoutes);
 
 // Connect to the Database
 const connectDB = async () => {
