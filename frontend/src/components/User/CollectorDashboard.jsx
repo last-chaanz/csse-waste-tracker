@@ -160,7 +160,7 @@ const GarbageCollectorDashboard = ({ onLogout }) => {
                                 Dashboard
                             </li>
                             <li className="cursor-pointer p-4 hover:bg-blue-600" onClick={() => navigate('/collectorBin')}>
-                                Register Bin
+                                Manage Bin
                             </li>
                             <li
                                 className="cursor-pointer p-4 hover:bg-blue-600"

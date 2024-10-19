@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-// import DashboardImage from '../../assets/dash-imagess.png'; 
+import DashboardImage from '../../assets/dash-imagess.png'; 
 import NavBar from '../common/Navbar';
 import Footer from '../common/Footer';
 
@@ -220,23 +220,21 @@ const UserDashboard = ({ onLogout }) => {
                         </div>
                     </header> */}
             <br></br>
-            <div className="flex flex-col-reverse items-center justify-center gap-8 p-6 md:flex-row md:gap-12 md:p-10">
-                <div className="flex w-full flex-col items-center justify-center gap-4 text-center md:w-1/2 md:items-start md:text-left">
-                    <h1 className="mt-6 text-2xl font-bold tracking-wide text-sky-900 md:mt-0 md:text-3xl">
-                        Start Your <span className="text-xl font-bold text-green-500 md:text-2xl">Waste Management</span> Journey
-                        Here
-                    </h1>
+            <div className="flex flex-col lg:flex-row items-start justify-center gap-8 lg:gap-[75px] p-6 lg:p-10">
+                <div className="flex flex-col items-center lg:items-start justify-center gap-4">
+                    <span className="mt-10 lg:mt-20 text-2xl lg:text-3xl font-bold tracking-wide text-sky-900 text-center lg:text-left">
+                        Start Your <span className="text-xl lg:text-2xl font-bold text-green-500">Waste Management</span> Journey Here
+                    </span>
                     <button
                         onClick={() => navigate('/FetchBin')}
-                        className="hover:text-gray rounded-xl border-2 border-sky-900 px-6 py-2 text-base transition-all duration-300 hover:border-4 md:px-8 md:text-lg"
+                        className="hover:text-gray rounded-xl border-2 border-sky-900 px-6 lg:px-8 py-2 text-base lg:text-lg hover:border-4"
                     >
                         Click Here
                     </button>
                 </div>
-                <div className="w-full md:w-3/4">
-                    {/* <img src={DashboardImage} alt="Dashboard" className="w-full rounded-lg border-b-4 shadow-md" /> */}
-                </div>
+                <img src={DashboardImage} alt="Dashboard" className="w-full lg:w-3/4 rounded-lg border-b-4 mt-6 lg:mt-0" />
             </div>
+
             {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         <div className="rounded-lg bg-white p-6 shadow-md">
                             <h3 className="text-lg font-semibold">Manage Your Bin</h3>
