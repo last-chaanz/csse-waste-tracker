@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Avatar from 'react-avatar';
 import axios from 'axios';
-import { HiOutlineCog } from 'react-icons/hi'; // Import a settings icon
-import LoginImage from '../../images/logoImage.jpeg'; // Import the logo image
-import DashboardImage from '../../assets/dash-imagess.png'; // Import the dashboard image
+import DashboardImage from '../../assets/dash-imagess.png'; 
 import NavBar from '../common/Navbar';
 import Footer from '../common/Footer';
 
-const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
+export const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
     const [name, setName] = useState(user.name || '');
     const [address, setAddress] = useState(user.address || '');
 
@@ -24,22 +21,22 @@ const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
             <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
                 <h2 className="mb-4 text-2xl font-bold">Update User Information</h2>
                 <div className="mb-4">
-                    <label className="block text-gray-700">Name</label>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                <label htmlFor="userName">Name</label>
+                <input
+                    id="userName"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
                 </div>
                 <div className="mb-4">
-                    <label className="block text-gray-700">Address</label>
-                    <input
-                        type="text"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                <label htmlFor="userAddress">Address</label>
+                <input
+                    id="userAddress"
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                />
                 </div>
                 <div className="flex justify-end">
                     <button onClick={onClose} className="mr-2 rounded bg-gray-300 px-4 py-2 transition hover:bg-gray-400">
