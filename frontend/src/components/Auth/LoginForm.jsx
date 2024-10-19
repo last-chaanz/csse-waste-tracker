@@ -248,7 +248,7 @@ const LoginForm = () => {
         try {
             const response = await axios.post('http://localhost:4000/api/auth/login', credentials);
 
-            const { token, role, userType } = response.data;
+            const { token, role, userType, userID } = response.data;
 
             localStorage.setItem('token', token);
             const userData = {
@@ -256,6 +256,8 @@ const LoginForm = () => {
                 userType,
             };
             localStorage.setItem('user', JSON.stringify(userData));
+            localStorage.setItem('userID', userID);
+            // console.log(JSON.stringify(userData));
 
             if (role === 'admin') {
                 setRedirectUrl('/admin/dashboard');

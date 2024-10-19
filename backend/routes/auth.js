@@ -13,27 +13,25 @@ const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 const BASE_URL = process.env.BASE_URL || "http://localhost:4000";
 
 // User Registration Route
-router.post(
-  "/register",
-  async (req, res) => {
-    const { name, email, password, address, role , userType } = req.body;
+router.post("/register", async (req, res) => {
+  const { name, email, password, address, role, userType } = req.body;
 
-    try {
-      let user = await User.findOne({ email });
-      if (user) return res.status(400).json({ msg: "User already exists" });
+  try {
+    let user = await User.findOne({ email });
+    if (user) return res.status(400).json({ msg: "User already exists" });
 
-      user = new User({
-        name,
-        email,
-        password,
-        address,
-        role,
-        userType,
-        isVerified: true,
-      });
-      await user.save();
+    user = new User({
+      name,
+      email,
+      password,
+      address,
+      role,
+      userType,
+      isVerified: true,
+    });
+    await user.save();
 
-      const html=`
+    const html = `
       <!DOCTYPE html>
 <html>
 <head>
@@ -104,15 +102,19 @@ router.post(
     </div>
 </body>
 </html>
-      `
-      await sendEmail(email,'Registration of Garbage Collector','You have been added to Garabe Collector',html)
-      res.status(201).json({ msg: "Registered successfully" });
-    } catch (err) {
-            console.log("✌️err --->", err);
-      res.status(500).json({ msg: "Server error", error: err.message });
-    }
+      `;
+    await sendEmail(
+      email,
+      "Registration of Garbage Collector",
+      "You have been added to Garabe Collector",
+      html
+    );
+    res.status(201).json({ msg: "Registered successfully" });
+  } catch (err) {
+    console.log("✌️err --->", err);
+    res.status(500).json({ msg: "Server error", error: err.message });
   }
-);
+});
 
 // User Login Route
 router.post(
@@ -144,6 +146,7 @@ router.post(
         token,
         role: user.role,
         userType: user.userType,
+        userID: user._id,
         address: user.address,
       });
     } catch (err) {
