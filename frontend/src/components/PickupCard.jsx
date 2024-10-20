@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { Calendar as CalendarIcon, AlertCircle, CreditCard, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useNavigate } from 'react-router-dom';
 
 const PickupCard = ({ pickup, onReportIssue, onPayment }) => {
     const getStatusColor = (status) => {
@@ -17,7 +18,7 @@ const PickupCard = ({ pickup, onReportIssue, onPayment }) => {
                 return 'bg-red-100 text-red-800 border-red-300';
         }
     };
-
+    const navigate = useNavigate();
     const getWasteTypeIcon = (wasteType) => {
         switch (wasteType) {
             case 'Recyclable Waste':
@@ -65,7 +66,7 @@ const PickupCard = ({ pickup, onReportIssue, onPayment }) => {
                     </Button>
                     {pickup.paymentStatus !== 'Paid' && (
                         <Button
-                            onClick={() => onPayment(pickup._id)}
+                            onClick={() => navigate('/payments')}
                             className="flex-1 items-center justify-center bg-green-500 text-white transition-all duration-300 hover:bg-green-600"
                             size="sm"
                         >

@@ -168,9 +168,7 @@ const GarbageCollectorDashboard = ({ onLogout }) => {
                             >
                                 Collection Schedule
                             </li>
-                            <li className="cursor-pointer p-4 hover:bg-blue-600" onClick={() => navigate('/payments')}>
-                                Payments
-                            </li>
+
                             <li className="cursor-pointer p-4 hover:bg-red-600" onClick={handleLogout}>
                                 Logout
                             </li>
@@ -185,7 +183,7 @@ const GarbageCollectorDashboard = ({ onLogout }) => {
                         <div className="flex flex-col items-center">
                             <div className="flex items-center justify-center space-x-3">
                                 <img src={LoginImage} alt="Logo" className="h-16 w-16" />
-                                <h1 className="text-2xl font-bold">CountryClean.LK</h1>
+                                <h1 className="text-2xl font-bold">Green Stream</h1>
                             </div>
                             <div className="mt-2 flex items-center space-x-3">
                                 <Avatar name={user.name || 'User'} size="40" round={true} />
@@ -297,4 +295,3 @@ const GarbageCollectorDashboard = ({ onLogout }) => {
 };
 
 export default GarbageCollectorDashboard;
- 

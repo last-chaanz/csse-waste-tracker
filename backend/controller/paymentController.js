@@ -30,6 +30,7 @@ const paymentController = {
       });
 
       res.status(201).json(payment);
+      // res.status(201).json();
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

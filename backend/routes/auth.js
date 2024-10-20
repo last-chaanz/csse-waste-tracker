@@ -92,7 +92,7 @@ router.post("/register", async (req, res) => {
             <p>If you have any questions or need further assistance, please do not hesitate to reach out to us.</p>
             <p>Your temporary details are here. please update your temp password</p>
             <p>Email : ${email} </p>
-             <p>Passport : ${password} </p>
+             <p>Password : ${password} </p>
             <p>Thank you for your valuable contribution!</p>
             <p>Best regards,<br>Garbase Collector</p>
         </div>
