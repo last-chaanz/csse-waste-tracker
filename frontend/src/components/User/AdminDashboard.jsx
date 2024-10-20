@@ -6,10 +6,10 @@ import axios from 'axios';
 
 // Sidebar component
 const Sidebar = ({ user, onViewCollectors, onAddCollector, onProfileClick, onLogout }) => (
-    <div className="sidebar bg-white shadow-lg p-4 rounded">
-        <h2 className="text-xl font-bold mb-4">Admin Dashboard</h2>
-        <div className="flex items-center mb-4">
-            <Avatar src={user.avatar || "defaultAvatar.png"} size={64} /> {/* Add Avatar */}
+    <div className="sidebar rounded bg-white p-4 shadow-lg">
+        <h2 className="mb-4 text-xl font-bold">Admin Dashboard</h2>
+        <div className="mb-4 flex items-center">
+            <Avatar src={user.avatar || 'defaultAvatar.png'} size={64} /> {/* Add Avatar */}
             <div className="ml-4">
                 <p className="font-medium">{user.name}</p>
                 <p className="text-sm text-gray-500">{user.email}</p>
@@ -41,8 +41,8 @@ const Sidebar = ({ user, onViewCollectors, onAddCollector, onProfileClick, onLog
 
 // Footer component
 const Footer = () => (
-    <div className="footer bg-gray-200 text-center p-4 mt-4">
-        <p>&copy; 2024 Clean Country.LK. All rights reserved.</p>
+    <div className="footer mt-4 bg-gray-200 p-4 text-center">
+        <p>&copy; 2024 Green Stream All rights reserved.</p>
     </div>
 );
 
@@ -67,9 +67,7 @@ const AdminDashboard = () => {
     }, []);
 
     useEffect(() => {
-        const filtered = collectors.filter(collector =>
-            collector.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
+        const filtered = collectors.filter((collector) => collector.name.toLowerCase().includes(searchQuery.toLowerCase()));
         setFilteredCollectors(filtered);
         setCollectorCount(filtered.length);
     }, [searchQuery, collectors]);
@@ -142,17 +140,10 @@ const AdminDashboard = () => {
             title: 'Actions',
             render: (_, record) => (
                 <div>
-                    <Button
-                        onClick={() => openUpdateModal(record)}
-                        style={{ marginRight: 8 }}
-                        type="primary"
-                    >
+                    <Button onClick={() => openUpdateModal(record)} style={{ marginRight: 8 }} type="primary">
                         Update
                     </Button>
-                    <Button
-                        type="danger"
-                        onClick={() => handleDeleteCollector(record._id)}
-                    >
+                    <Button type="danger" onClick={() => handleDeleteCollector(record._id)}>
                         Delete
                     </Button>
                 </div>
@@ -208,21 +199,21 @@ const AdminDashboard = () => {
     };
 
     return (
-        <div className="container mx-auto p-4 flex">
+        <div className="container mx-auto flex p-4">
             <Sidebar
                 user={user}
                 onViewCollectors={fetchCollectors}
                 onAddCollector={() => setShowAddCollectorModal(true)}
-                onProfileClick={() => {/* Handle profile click */}}
+                onProfileClick={() => {
+                    /* Handle profile click */
+                }}
                 onLogout={handleLogout}
             />
             <div className="flex-grow p-4">
                 {/* <Header /> */}
-                <div className="bg-white shadow-lg rounded-lg p-6 mb-4">
-                    <h2 className="text-3xl font-extrabold text-blue-600 text-center mb-4">
-                        Manage Garbage Collectors
-                    </h2>
-                    <h3 className="text-xl text-center mb-4" data-id="count">
+                <div className="mb-4 rounded-lg bg-white p-6 shadow-lg">
+                    <h2 className="mb-4 text-center text-3xl font-extrabold text-blue-600">Manage Garbage Collectors</h2>
+                    <h3 className="mb-4 text-center text-xl" data-id="count">
                         Total Collectors: {collectorCount}
                     </h3>
                     <Input

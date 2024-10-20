@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Avatar from 'react-avatar';
 import axios from 'axios';
-import DashboardImage from '../../assets/dash-imagess.png'; 
+import { HiOutlineCog } from 'react-icons/hi'; // Import a settings icon
+// import LoginImage from '../../images/logoImage.jpeg'; // Import the logo image
+import DashboardImage from '../../assets/dash-imagess.png'; // Import the dashboard image
 import NavBar from '../common/Navbar';
 import Footer from '../common/Footer';
 
-export const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
+const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
     const [name, setName] = useState(user.name || '');
     const [address, setAddress] = useState(user.address || '');
 
@@ -21,22 +24,22 @@ export const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
             <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
                 <h2 className="mb-4 text-2xl font-bold">Update User Information</h2>
                 <div className="mb-4">
-                <label htmlFor="userName">Name</label>
-                <input
-                    id="userName"
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
+                    <label className="block text-gray-700">Name</label>
+                    <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
                 </div>
                 <div className="mb-4">
-                <label htmlFor="userAddress">Address</label>
-                <input
-                    id="userAddress"
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
+                    <label className="block text-gray-700">Address</label>
+                    <input
+                        type="text"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
                 </div>
                 <div className="flex justify-end">
                     <button onClick={onClose} className="mr-2 rounded bg-gray-300 px-4 py-2 transition hover:bg-gray-400">
@@ -202,39 +205,41 @@ const UserDashboard = ({ onLogout }) => {
             {/* Main Content */}
             {/* <div className="flex flex-1 bg-gray-100">
                 <main className="flex-1 p-6"> */}
-            {/* <header className="flex items-center justify-between rounded-md bg-gray-100 px-6 py-4 shadow-md">
-                        <div className="flex items-center space-x-4"> */}
-            {/* User Avatar and Greeting */}
-            {/* <Avatar name={user.name || 'User'} size="40" round={true} />
-                            <h1 className="text-xl font-medium text-gray-800 dark:text-white">{`Hi, ${user.name || 'User'}`}</h1>
-                            <button
-                                onClick={() => setShowUpdateModal(true)}
-                                className="text-gray-500 hover:text-gray-700 focus:outline-none dark:text-gray-300 dark:hover:text-gray-500"
-                                type="button"
-                            >
-                                <HiOutlineCog className="h-6 w-6" />
-                            </button>
-                        </div>
-                        <div className="hidden items-center text-sm text-gray-500 dark:text-gray-300 sm:flex">
-                            <p>{currentDateTime}</p>
-                        </div>
-                    </header> */}
+            <header className="flex items-center justify-between rounded-md bg-gray-100 px-6 py-4 shadow-md">
+                <div className="flex items-center space-x-4">
+                    {/* User Avatar and Greeting */}
+                    <Avatar name={user.name || 'User'} size="40" round={true} />
+                    <h1 className="text-xl font-medium text-gray-800 dark:text-white">{`Hi, ${user.name || 'User'}`}</h1>
+                    <button
+                        onClick={() => setShowUpdateModal(true)}
+                        className="text-gray-500 hover:text-gray-700 focus:outline-none dark:text-gray-300 dark:hover:text-gray-500"
+                        type="button"
+                    >
+                        <HiOutlineCog className="h-6 w-6" />
+                    </button>
+                </div>
+                <div className="hidden items-center text-sm text-gray-500 dark:text-gray-300 sm:flex">
+                    <p>{currentDateTime}</p>
+                </div>
+            </header>
             <br></br>
-            <div className="flex flex-col lg:flex-row items-start justify-center gap-8 lg:gap-[75px] p-6 lg:p-10">
-                <div className="flex flex-col items-center lg:items-start justify-center gap-4">
-                    <span className="mt-10 lg:mt-20 text-2xl lg:text-3xl font-bold tracking-wide text-sky-900 text-center lg:text-left">
-                        Start Your <span className="text-xl lg:text-2xl font-bold text-green-500">Waste Management</span> Journey Here
-                    </span>
+            <div className="flex flex-col-reverse items-center justify-center gap-8 p-6 md:flex-row md:gap-12 md:p-10">
+                <div className="flex w-full flex-col items-center justify-center gap-4 text-center md:w-1/2 md:items-start md:text-left">
+                    <h1 className="mt-6 text-2xl font-bold tracking-wide text-sky-900 md:mt-0 md:text-3xl">
+                        Start Your <span className="text-xl font-bold text-green-500 md:text-2xl">Waste Management</span> Journey
+                        Here
+                    </h1>
                     <button
                         onClick={() => navigate('/FetchBin')}
-                        className="hover:text-gray rounded-xl border-2 border-sky-900 px-6 lg:px-8 py-2 text-base lg:text-lg hover:border-4"
+                        className="hover:text-gray rounded-xl border-2 border-sky-900 px-6 py-2 text-base transition-all duration-300 hover:border-4 md:px-8 md:text-lg"
                     >
                         Click Here
                     </button>
                 </div>
-                <img src={DashboardImage} alt="Dashboard" className="w-full lg:w-3/4 rounded-lg border-b-4 mt-6 lg:mt-0" />
+                <div className="w-full md:w-3/4">
+                    <img src={DashboardImage} alt="Dashboard" className="w-full rounded-lg border-b-4 shadow-md" />
+                </div>
             </div>
-
             {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         <div className="rounded-lg bg-white p-6 shadow-md">
                             <h3 className="text-lg font-semibold">Manage Your Bin</h3>

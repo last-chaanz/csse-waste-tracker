@@ -110,7 +110,10 @@ const PaymentPortal = ({ payment, onClose }) => {
             // Get from your auth context/storage
             // const userId = localStorage.getItem('userID');
             const daydiff = Math.round((new Date() - new Date(payment.pickupDate)) / (1000 * 60 * 60 * 24));
-            const pamount = 1000 + daydiff * 100;
+            const calculatedAmount = 1000 + daydiff * 100;
+            const pamount = Math.max(1000, calculatedAmount);
+
+            // const pamount = 1000 + daydiff * 100;
 
             const paymentData = {
                 userId: payment.userId,
@@ -253,7 +256,8 @@ const PaymentPortal = ({ payment, onClose }) => {
                                       const daysDifference = Math.round(
                                           (new Date() - new Date(payment.pickupDate)) / (1000 * 60 * 60 * 24),
                                       );
-                                      const amount = 1000 + daysDifference * 100;
+                                      const calculatedAmount = 1000 + daysDifference * 100;
+                                      const amount = Math.max(1000, calculatedAmount);
 
                                       return amount;
                                   })()}`}

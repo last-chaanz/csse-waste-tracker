@@ -88,7 +88,8 @@ const PendingPayments = ({ onPaymentClick }) => {
                                     const daysDifference = Math.round(
                                         (new Date() - new Date(payment.pickupDate)) / (1000 * 60 * 60 * 24),
                                     );
-                                    const amount = 1000 + daysDifference * 100;
+                                    const calculatedAmount = 1000 + daysDifference * 100;
+                                    const amount = Math.max(1000, calculatedAmount);
 
                                     return <span className="text-sm font-semibold text-gray-900">LKR {amount}</span>;
                                 })()}
